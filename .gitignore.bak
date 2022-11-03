@@ -164,7 +164,6 @@ phony.c
 *.pdb
 *.sdf
 *.suo
-*.vsidx
 
 # gcov files
 *.gcda
