@@ -163,12 +163,7 @@ phony.c
 *.opensdf
 *.pdb
 *.sdf
-*.sln
 *.suo
-*.vcproj
-*.vcxproj
-*vcproj.*.*.user
-*vcxproj.*
 
 # gcov files
 *.gcda
