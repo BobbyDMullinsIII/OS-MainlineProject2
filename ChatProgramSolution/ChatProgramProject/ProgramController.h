@@ -13,6 +13,8 @@ public:
     ProgramController();
     ~ProgramController();
 
+    ChatProgramProject window;
+
     void RunProgram();
     Server InitializeServer();
     Client InitializeClient();

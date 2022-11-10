@@ -22,12 +22,10 @@ ProgramController::~ProgramController() {}
 //Method for running overall program
 void ProgramController::RunProgram()
 {
-	ChatProgramProject w;
-
 	Server server = InitializeServer();
 	Client client = InitializeClient(); //Will only have one client for now
 
-	w.show();
+	window.show();
 }
 
 //Method for initializing server instance
