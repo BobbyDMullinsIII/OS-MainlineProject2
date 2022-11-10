@@ -6,10 +6,10 @@
 class User
 {
 public:
-    User(string userName, int userID);
+    User(std::string userName, int userID);
     ~User();
 
-    string name;
+    std::string name;
     int ID;
 
 private:

@@ -3,11 +3,12 @@
 #include <string>
 #include "StaticMethods.h"
 
+
 class StaticMethods
 {
 public:
 	static bool IsPowerOfTwo(int x);
-	static string removeNonLetters(string s);
+	static std::string removeNonLetters(std::string s);
 
 private:
 	//Constructors private because C++ does not have static classes
