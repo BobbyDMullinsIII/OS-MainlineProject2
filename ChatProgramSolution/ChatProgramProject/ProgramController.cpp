@@ -26,7 +26,7 @@ void ProgramController::RunProgram()
 	Server server = InitializeServer();
 	Client client = InitializeClient(); //Will only have one client for now
 
-	window.show();
+	window.show(); //Show main GUI window of client chat program (Using Qt)
 }
 
 //Method for initializing server instance
