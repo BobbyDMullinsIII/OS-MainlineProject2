@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Message.h"
 #include "User.h"
 #include "Client.h"
 #include "Server.h"
@@ -13,7 +14,7 @@ public:
     ProgramController();
     ~ProgramController();
 
-    ChatProgramProject window;
+    ChatProgramProject window; //Main GUI of client chat program (Using Qt)
 
     void RunProgram();
     Server InitializeServer();

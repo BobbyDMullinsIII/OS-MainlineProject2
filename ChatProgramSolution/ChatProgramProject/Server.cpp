@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Message.h"
 #include "Server.h"
 using namespace std;
 
-//Paramaterized Constructor
+//Parameterized Constructor
 Server::Server()
 {
 

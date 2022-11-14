@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Message.h"
 #include "User.h"
 #include "Client.h"
 #include "Server.h"

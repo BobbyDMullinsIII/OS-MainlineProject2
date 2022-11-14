@@ -4,7 +4,7 @@
 #include "User.h"
 using namespace std;
 
-//Paramaterized Constructor
+//Parameterized Constructor
 User::User(string userName, int userID)
 {
 	this->name = userName;
