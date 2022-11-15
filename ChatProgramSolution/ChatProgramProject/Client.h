@@ -1,6 +1,6 @@
 #pragma once
 
-//Includes taken from example client.cc file
+//Includes taken from example client.cc file (And Windows equivalents)
 #include <stdlib.h>
 #include <io.h>
 #include <Winsock2.h>
