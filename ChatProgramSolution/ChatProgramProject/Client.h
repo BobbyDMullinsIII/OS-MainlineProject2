@@ -2,8 +2,8 @@
 
 //Includes taken from example client.cc file
 #include <stdlib.h>
-//#include <unistd.h>
-//#include <netdb.h>
+#include <io.h>
+#include <Winsock2.h>
 #include <iostream>
 #include <string.h>
 

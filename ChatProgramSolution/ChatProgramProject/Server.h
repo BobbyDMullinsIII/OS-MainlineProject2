@@ -1,9 +1,9 @@
 #pragma once
 
-//Includes taken from example server.cc file
+//Includes taken from example server.cc file (And Windows equivalents)
 #include <stdlib.h>
-//#include <unistd.h>
-//#include <netdb.h>
+#include <io.h>
+#include <Winsock2.h>
 #include <iostream>
 #include <string.h>
 
