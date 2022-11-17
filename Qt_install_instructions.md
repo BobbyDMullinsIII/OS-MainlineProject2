@@ -1,6 +1,6 @@
 # Qt Installation Instructions (Visual Studio 2022)
 
-**1.** Qt is required in order to work on this project and its GUI.<br/>
+**1.** Qt is required in order to work on this project and its GUI. (We use open-source Qt on this project)<br/>
    Download link: [Qt Installer](https://www.qt.io/download-qt-installer?hsCtaTracking=99d9dd4f-5681-48d2-b096-470725510d34%7C074ddad0-fdef-4e53-8aa8-5e8a876d6ab4) <br/><br/>
 
 **2.** After opening the installer, it will ask you to create an account before installation. Just use any email you want to sign up and whatever password you want and verify the account through email. <br/><br/>
