@@ -15,7 +15,7 @@
 
 ![image4](https://user-images.githubusercontent.com/61435002/202375355-496ffecb-c047-4af8-a8ab-3b632d16b1d5.png) <br/>
 
-**4.** After that, agree to the license agreement and the standard 'Qt' start menu shortcut, and wait for install. It should take around 4 to 5GB of space. <br/><br/>
+**4.** After that, agree to the license agreement and the standard 'Qt' start menu shortcut, and install. It should take around 4 to 5GB of space and take some time. <br/><br/>
 
 **5.** After the install finishes, it might open a stand alone Qt editor. Just ignore it and close it. <br/><br/>
 
