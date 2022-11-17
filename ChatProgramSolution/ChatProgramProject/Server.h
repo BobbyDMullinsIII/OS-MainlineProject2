@@ -10,6 +10,7 @@
 
 //Normal includes
 #include <string>
+#include <qmessagebox.h>
 #include "Message.h"
 #include "Server.h"
 
@@ -25,6 +26,12 @@ public:
 	Message mymessage;
 	int connection;
 	int value;
+
+	void createSockDesc();
+	void createPortNum(std::string port);
+	void createAddressRecord();
+	void bindSocket();
+	void listenSocket();
 
 private:
 
