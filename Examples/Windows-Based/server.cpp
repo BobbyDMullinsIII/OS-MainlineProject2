@@ -1,6 +1,8 @@
+#pragma comment(lib, "Ws2_32.lib")
 #include <stdlib.h>
 #include <io.h>
 #include <Winsock2.h>
+#include <ws2tcpip.h>
 #include <iostream>
 #include <string.h>
 using namespace std;
@@ -33,11 +35,11 @@ int main(int argc, char** argv)
 	// Get the port number from the command line
 	if (argc > 1)
 	{
-		strcpy(portnum, argv[1]);
+		strcpy_s(portnum, argv[1]);
 	}
 	else
 	{
-		strcpy(portnum, "2000");
+		strcpy_s(portnum, "2000");
 	}
 
 	// Set up the address record
@@ -97,7 +99,7 @@ int main(int argc, char** argv)
 				// Read exactly one message
 			// Note that the first parameter of read is the returned
 			// value from accept( ) above.
-			value = read(connection, (char*)&mymessage, sizeof(message));
+			value = _read(connection, (char*)&mymessage, sizeof(message));
 			cout << "value = " << value << endl;
 			// Display the message
 			cout << "Server received: " << endl;
@@ -107,14 +109,14 @@ int main(int argc, char** argv)
 			// Create a response message
 			mymessage.ivalue++;
 			mymessage.dvalue += 1.0;
-			strcpy(mymessage.cvalue, "Server response");
+			strcpy_s(mymessage.cvalue, "Server response");
 			// Display the new message
 			cout << "Server sends back: " << endl;
 			cout << "  ivalue: " << mymessage.ivalue << endl;
 			cout << "  dvalue: " << mymessage.dvalue << endl;
 			cout << "  cvalue: " << mymessage.cvalue << endl;
 			// Send the response string back to the client
-			write(connection, (char*)&mymessage, sizeof(message));
+			_write(connection, (char*)&mymessage, sizeof(message));
 
 			// Then quit
 			break;
@@ -123,7 +125,7 @@ int main(int argc, char** argv)
 	} // for
 
 	// Close the connection
-	close(connection);
+	_close(connection);
 	return 0;
 
 } // main( )

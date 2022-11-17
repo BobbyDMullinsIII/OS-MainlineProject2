@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <io.h>
 #include <Winsock2.h>
+#include <ws2tcpip.h>
 #include <iostream>
 #include <string.h>
 

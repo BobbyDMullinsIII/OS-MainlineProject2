@@ -1,6 +1,8 @@
+#pragma comment(lib, "Ws2_32.lib")
 #include <stdlib.h>
 #include <io.h>
 #include <Winsock2.h>
+#include <ws2tcpip.h>
 #include <iostream>
 #include <string.h>
 using namespace std;
@@ -27,14 +29,14 @@ int main(int argc, char** argv)
         cout << "Usage: client <host> [<portnum>]" << endl;
         exit(0);
     }
-    strcpy(hostname, argv[1]);
+    strcpy_s(hostname, argv[1]);
     if (argc == 3)
     {
-        strcpy(portnum, argv[2]);
+        strcpy_s(portnum, argv[2]);
     }
     else
     {
-        strcpy(portnum, "2000");
+        strcpy_s(portnum, "2000");
     }
 
     // Use AF_UNIX for unix pathnames instead
@@ -67,7 +69,7 @@ int main(int argc, char** argv)
 
     mymessage.ivalue = 1;
     mymessage.dvalue = 34.2;
-    strcpy(mymessage.cvalue, "Client message");
+    strcpy_s(mymessage.cvalue, "Client message");
 
     // Display the message to be sent
     cout << "Client sends: " << endl;
@@ -76,10 +78,10 @@ int main(int argc, char** argv)
     cout << "  cvalue: " << mymessage.cvalue << endl;
 
     // Send the message to the server
-    write(sockdesc, (char*)&mymessage, sizeof(message));
+    _write(sockdesc, (char*)&mymessage, sizeof(message));
 
     // Read back exactly one message
-    value = read(sockdesc, (char*)&mymessage, sizeof(message));
+    value = _read(sockdesc, (char*)&mymessage, sizeof(message));
 
     // Display the received message
     cout << "Client gets back: " << endl;
@@ -88,7 +90,7 @@ int main(int argc, char** argv)
     cout << "  cvalue: " << mymessage.cvalue << endl;
 
     // Close the socket
-    close(sockdesc);
+    _close(sockdesc);
 
     return 0;
 
