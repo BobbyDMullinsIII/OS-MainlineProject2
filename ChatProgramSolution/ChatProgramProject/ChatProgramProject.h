@@ -11,6 +11,9 @@ public:
     ChatProgramProject(QWidget *parent = nullptr);
     ~ChatProgramProject();
 
+private slots:
+    void handleExitButton();
+
 private:
     Ui::ChatProgramProjectClass ui;
 };
