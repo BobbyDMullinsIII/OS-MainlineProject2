@@ -20,6 +20,14 @@ public:
     Client();
     ~Client();
 
+    char hostname[81];
+    struct addrinfo* myinfo;
+    int sockdesc;
+    char portnum[81];
+    Message mymessage;
+    int connection;
+    int value;
+
 private:
 
 };
