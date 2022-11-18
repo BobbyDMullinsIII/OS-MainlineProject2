@@ -27,8 +27,8 @@ public:
 	int connection;
 	int value;
 
-	void createSockDesc();
 	void createPortNum(std::string port);
+	void createSockDesc();
 	void createAddressRecord();
 	void bindSocket();
 	void listenSocket();

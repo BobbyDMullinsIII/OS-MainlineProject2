@@ -21,21 +21,6 @@ Server::Server()
 //Deconstructor
 Server::~Server() {}
 
-//Method for creating socket for the server
-void Server::createSockDesc()
-{
-	//Creates socket descriptor
-	this->sockdesc = socket(AF_INET, SOCK_STREAM, 0);
-
-	//Shows messagebox with message if error occurred creating server socket
-	if (sockdesc < 0)
-	{
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server Socket Error", "There was an error creating the socket in the server.");
-		messageBox.setFixedSize(640, 480);
-	}
-}
-
 //Method for creating port number for the server
 void Server::createPortNum(std::string port)
 {
@@ -47,6 +32,25 @@ void Server::createPortNum(std::string port)
 	else
 	{
 		strcpy_s(this->portnum, port.c_str());
+	}
+}
+
+//Method for creating socket for the server
+void Server::createSockDesc()
+{
+	//Creates socket descriptor
+	//AF_INET = Binding to IP address(Should probably use this one)
+	//AF_UNIX = Unix pathnames and directly for sockets
+	//SOCK_STREAM = TCP (Should probably use this one)
+	//SOCK_DGRAM = UDP
+	this->sockdesc = socket(AF_INET, SOCK_STREAM, 0);
+
+	//Shows messagebox with message if error occurred creating server socket
+	if (this->sockdesc < 0)
+	{
+		QMessageBox messageBox;
+		messageBox.critical(0, "Server Socket Error", "There was an error creating the socket in the server.");
+		messageBox.setFixedSize(640, 480);
 	}
 }
 
@@ -62,6 +66,7 @@ void Server::createAddressRecord()
 	}
 }
 
+//Method for binding socket on the server
 void Server::bindSocket()
 {
 	//Shows messagebox with message if error occurred binding the socket for the server
@@ -73,6 +78,7 @@ void Server::bindSocket()
 	}
 }
 
+//Method for listening to socket on the server
 void Server::listenSocket()
 {
 	//Shows messagebox with message if error occurred in the listen for the server

@@ -29,6 +29,12 @@ public:
     int connection;
     int value;
 
+    void createHostName(std::string host);
+    void createPortNum(std::string port);
+    void createSockDesc();
+    void createAddressRecord();
+    void connectToHost();
+
 private:
 
 };
