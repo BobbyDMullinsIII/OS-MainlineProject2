@@ -87,7 +87,7 @@ void Client::connectToHost()
 	else //Shows client host connection if successful
 	{
 		QMessageBox messageBox;
-		messageBox.information(0, "Client Host Connection Information", "Client connection = %d", connection);
+		messageBox.information(0, "Client Host Connection Information", "Client connection = %d", this->connection);
 		messageBox.setFixedSize(640, 480);
 	}
 }
