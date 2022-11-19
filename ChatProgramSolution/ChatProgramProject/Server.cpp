@@ -24,8 +24,8 @@ Server::~Server() {}
 //Method for creating port number for the server
 void Server::createPortNum(std::string port)
 {
-	//If input port is 0, set portnumber to standard 2000
-	if (port == "0")
+	//If input port is -1, set portnumber to standard 2000
+	if (port == "-1")
 	{
 		strcpy_s(this->portnum, "2000");
 	}
@@ -48,8 +48,12 @@ void Server::createSockDesc()
 	//Shows messagebox with message if error occurred creating server socket
 	if (this->sockdesc < 0)
 	{
+		//String to put into messagebox
+		std::string message = "There was an error creating the socket in the server.\nsockdesc: ";
+		message += std::to_string(this->sockdesc);
+
 		QMessageBox messageBox;
-		messageBox.critical(0, "Server Socket Error", "There was an error creating the socket in the server.");
+		messageBox.critical(0, "Server Socket Error", message.c_str());
 		messageBox.setFixedSize(640, 480);
 	}
 }
@@ -57,11 +61,18 @@ void Server::createSockDesc()
 //Method for creating address record for the server
 void Server::createAddressRecord()
 {
+	int returnVal = getaddrinfo("127.0.0.1", this->portnum, NULL, &this->myinfo);
+
 	//Shows messagebox with message if error occurred getting the address for the server
-	if (getaddrinfo("127.0.0.1", this->portnum, NULL, &this->myinfo) != 0)
+	if (returnVal != 0)
 	{
+		//String to put into messagebox
+		//Link for error codes: https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2
+		std::string message = "There was an error getting the address in the server.\nreturnVal: ";
+		message += std::to_string(returnVal);
+
 		QMessageBox messageBox;
-		messageBox.critical(0, "Server Address Error", "There was an error getting the address in the server.");
+		messageBox.critical(0, "Server Address Error", message.c_str());
 		messageBox.setFixedSize(640, 480);
 	}
 }
@@ -69,11 +80,17 @@ void Server::createAddressRecord()
 //Method for binding socket on the server
 void Server::bindSocket()
 {
+	int returnVal = bind(this->sockdesc, this->myinfo->ai_addr, this->myinfo->ai_addrlen);
+
 	//Shows messagebox with message if error occurred binding the socket for the server
-	if (bind(this->sockdesc, this->myinfo->ai_addr, this->myinfo->ai_addrlen) < 0)
+	if (returnVal < 0)
 	{
+		//String to put into messagebox
+		std::string message = "There was an error binding the socket to an address in the server.\nreturnVal: ";
+		message += std::to_string(returnVal);
+
 		QMessageBox messageBox;
-		messageBox.critical(0, "Server Binding Error", "There was an error binding the socket to an address in the server.");
+		messageBox.critical(0, "Server Binding Error", message.c_str());
 		messageBox.setFixedSize(640, 480);
 	}
 }
@@ -81,11 +98,17 @@ void Server::bindSocket()
 //Method for listening to socket on the server
 void Server::listenSocket()
 {
+	int returnVal = listen(this->sockdesc, 1);
+
 	//Shows messagebox with message if error occurred in the listen for the server
-	if (listen(this->sockdesc, 1) < 0)
+	if (returnVal < 0)
 	{
+		//String to put into messagebox
+		std::string message = "There was an error in listen in the server.\nreturnVal: ";
+		message += std::to_string(returnVal);
+
 		QMessageBox messageBox;
-		messageBox.critical(0, "Server Listen Error", "There was an error in listen in the server.");
+		messageBox.critical(0, "Server Listen Error", message.c_str());
 		messageBox.setFixedSize(640, 480);
 	}
 }

@@ -5,6 +5,7 @@
 #include "User.h"
 #include "Client.h"
 #include "Server.h"
+#include "StaticMethods.h"
 #include "ChatProgramProject.h"
 #include "ProgramController.h"
 
