@@ -25,7 +25,7 @@ ProgramController::~ProgramController() {}
 void ProgramController::RunProgram()
 {
 	Server server = InitializeServer();
-	Client client = InitializeClient(); //Will only have one client for now
+	vector<Client> clientVector; //Vector of clients
 
 	window.show(); //Show main GUI window of client chat program (Using Qt)
 }
