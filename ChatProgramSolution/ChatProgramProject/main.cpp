@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //Run program
+    //Run client program
     ClientController CControl;
-    CControl.RunProgram();
+    CControl.RunClientProgram();
 
     return a.exec();
 }
