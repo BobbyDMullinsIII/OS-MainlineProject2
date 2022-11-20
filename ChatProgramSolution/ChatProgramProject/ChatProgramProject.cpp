@@ -2,14 +2,11 @@
 
 ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
 {
-    ui.setupUi(this); //Sets up this window
+    ui.setupUi(this); //Sets up this window for the client
+ 
+    QMainWindow::setStyleSheet("background-color: gray; color: white;"); //Sets background color of window to gray and text to white
 
-    //Stylesheets for Qt windows and widgets are VERY similar to CSS
-    QMainWindow::setStyleSheet("background-color: black; color: white;");//Sets background color of window to black and text to white
-
-    //Will figure this out later
-    //connect(exitActionButton, SIGNAL(clicked()), this, SLOT(handleExitButton()));//Set exit button to close program
-
+    //connect(exitActionButton, SIGNAL(clicked()), this, SLOT(handleExitButton()));//Set exit button to close client program
 }
 
 ChatProgramProject::~ChatProgramProject()

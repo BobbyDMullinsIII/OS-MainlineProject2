@@ -97,8 +97,7 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Message.cpp" />
-    <ClCompile Include="ProgramController.cpp" />
-    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="ClientController.cpp" />
     <ClCompile Include="StaticMethods.cpp" />
     <ClCompile Include="User.cpp" />
     <QtRcc Include="ChatProgramProject.qrc" />
@@ -110,8 +109,7 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="Message.h" />
-    <ClInclude Include="ProgramController.h" />
-    <ClInclude Include="Server.h" />
+    <ClInclude Include="ClientController.h" />
     <ClInclude Include="StaticMethods.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

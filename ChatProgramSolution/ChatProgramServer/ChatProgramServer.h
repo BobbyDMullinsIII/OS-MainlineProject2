@@ -11,6 +11,9 @@ public:
     ChatProgramServer(QWidget *parent = nullptr);
     ~ChatProgramServer();
 
+private slots:
+    void handleExitButton();
+
 private:
     Ui::ChatProgramServerClass ui;
 };
