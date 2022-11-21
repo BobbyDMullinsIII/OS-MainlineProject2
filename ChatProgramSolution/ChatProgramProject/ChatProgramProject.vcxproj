@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ConnectDialog.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="ClientController.cpp" />
     <ClCompile Include="StaticMethods.cpp" />
@@ -105,9 +106,11 @@
     <QtMoc Include="ChatProgramProject.h" />
     <ClCompile Include="ChatProgramProject.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="ConnectDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <QtMoc Include="ConnectDialog.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="ClientController.h" />
     <ClInclude Include="StaticMethods.h" />

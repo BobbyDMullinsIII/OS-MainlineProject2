@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ChatProgramProject.h"
+#include "ConnectDialog.h"
 #include "ClientController.h"
 
 class ChatProgramProject : public QMainWindow
@@ -12,9 +13,11 @@ public:
     ChatProgramProject(QWidget *parent = nullptr);
     ~ChatProgramProject();
 
+    ConnectDialog dialog;
     ClientController CControl; //Client Controller Class
 
 private slots:
+    void on_actionConnectToServer_triggered();
     void on_exitActionButton_triggered(); //Buttons in the menubar menus use the "triggered" event
                                           //Regular buttons on the form might use the "clicked" event instead
 

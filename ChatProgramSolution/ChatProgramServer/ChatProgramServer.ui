@@ -27,6 +27,7 @@
     <property name="title">
      <string>Options</string>
     </property>
+    <addaction name="actionStartServer"/>
     <addaction name="exitActionButton"/>
    </widget>
    <addaction name="menuOptions"/>
@@ -43,6 +44,11 @@
   <action name="exitActionButton">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionStartServer">
+   <property name="text">
+    <string>Start Server</string>
    </property>
   </action>
  </widget>

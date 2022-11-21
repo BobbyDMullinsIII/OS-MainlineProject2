@@ -41,6 +41,7 @@
     <property name="title">
      <string>Options</string>
     </property>
+    <addaction name="actionConnectToServer"/>
     <addaction name="exitActionButton"/>
    </widget>
    <addaction name="menuOptions"/>
@@ -57,6 +58,11 @@
   <action name="exitActionButton">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionConnectToServer">
+   <property name="text">
+    <string>Connect To Server</string>
    </property>
   </action>
  </widget>

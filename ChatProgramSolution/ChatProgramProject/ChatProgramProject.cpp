@@ -1,4 +1,5 @@
 #include "ChatProgramProject.h"
+#include "ConnectDialog.h"
 #include "ClientController.h"
 
 ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
@@ -10,6 +11,11 @@ ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
 
 ChatProgramProject::~ChatProgramProject()
 {}
+
+void ChatProgramProject::on_actionConnectToServer_triggered()
+{
+    this->dialog.show();
+}
 
 void ChatProgramProject::on_exitActionButton_triggered()
 {
