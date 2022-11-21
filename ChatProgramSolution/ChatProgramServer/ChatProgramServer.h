@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ChatProgramServer.h"
+#include "ServerController.h"
 
 class ChatProgramServer : public QMainWindow
 {
@@ -11,8 +12,11 @@ public:
     ChatProgramServer(QWidget *parent = nullptr);
     ~ChatProgramServer();
 
+    ServerController SControl;
+
 private slots:
-    void handleExitButton();
+    void on_exitActionButton_triggered(); //Buttons in the menubar menus use the "triggered" event
+                                          //Regular buttons on the form might use the "clicked" event instead
 
 private:
     Ui::ChatProgramServerClass ui;

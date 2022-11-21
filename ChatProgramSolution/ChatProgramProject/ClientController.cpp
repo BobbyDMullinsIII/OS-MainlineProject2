@@ -5,7 +5,6 @@
 #include "Message.h"
 #include "User.h"
 #include "Client.h"
-#include "ChatProgramProject.h"
 #include "ClientController.h"
 using namespace std;
 
@@ -23,8 +22,6 @@ ClientController::~ClientController() {}
 void ClientController::RunClientProgram()
 {
 	Client client = InitializeClient();
-
-	cwindow.show(); //Show main GUI window of client chat program (Using Qt)
 }
 
 //Method for initializing client instance

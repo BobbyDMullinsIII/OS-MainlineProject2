@@ -10,7 +10,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "ServerController.h"
+#include "ChatProgramServer.h"
 #include <QtWidgets/QApplication>
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Run server program
-    ServerController SControl;
-    SControl.RunServerProgram();
+    ChatProgramServer swindow; //Main GUI of server program (Using Qt)
+    swindow.show(); //Show main server GUI window
 
     return a.exec();
 }

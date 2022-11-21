@@ -4,7 +4,6 @@
 #include <vector>
 #include "Message.h"
 #include "Server.h"
-#include "ChatProgramServer.h"
 #include "ServerController.h"
 using namespace std;
 
@@ -22,8 +21,6 @@ ServerController::~ServerController() {}
 void ServerController::RunServerProgram()
 {
 	Server server = InitializeServer();
-
-	swindow.show(); //Show main GUI window of server program (Using Qt)
 }
 
 //Method for initializing server instance

@@ -10,7 +10,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "ClientController.h"
+#include "ChatProgramProject.h"
 #include <QtWidgets/QApplication>
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     //Run client program
-    ClientController CControl;
-    CControl.RunClientProgram();
+    ChatProgramProject cwindow; //Main GUI of client chat program (Using Qt)
+    cwindow.show(); //Show main client GUI window
 
     return a.exec();
 }
