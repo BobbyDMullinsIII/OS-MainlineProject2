@@ -17,7 +17,7 @@
 class Server
 {
 public:
-	Server();
+	Server(std::string port);
 	~Server();
 
 	struct addrinfo* myinfo;

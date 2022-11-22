@@ -11,8 +11,9 @@ public:
     ServerController();
     ~ServerController();
 
-    void RunServerProgram();
-    Server InitializeServer();
+    void RunServerProgram(std::string port);
+    static void RunServerLoop(std::string port);
+    static void HandleClient(int connection);
 
 
 private:

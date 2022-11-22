@@ -13,9 +13,12 @@
 #include "Server.h"
 
 //Parameterized Constructor
-Server::Server()
+Server::Server(std::string port)
 {
-
+	createPortNum(port);
+	createSockDesc();
+	createAddressRecord();
+	bindSocket();
 }
 
 //Deconstructor

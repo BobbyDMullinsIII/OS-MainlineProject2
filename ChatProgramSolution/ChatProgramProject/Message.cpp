@@ -14,7 +14,7 @@ Message::Message(int i, double d, char c[56])
 {
 	this->ivalue = i;
 	this->dvalue = d;
-	strcpy(cvalue, c); //Copies c into cvalue
+	strcpy_s(cvalue, c); //Copies c into cvalue
 }
 
 
