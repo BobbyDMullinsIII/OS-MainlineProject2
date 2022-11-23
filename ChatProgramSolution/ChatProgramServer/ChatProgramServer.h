@@ -15,6 +15,8 @@ public:
 
     InitServerDialog dialog;
     ServerController SControl;
+    static void DisplayClientMessage(int clientID, std::string messageText); //Method for displaying message from client
+    static void DisplayReturnMessage(int clientID, std::string messageText); //Method for displaying message sent back to client
 
 private slots:
     void on_actionStartServer_triggered();

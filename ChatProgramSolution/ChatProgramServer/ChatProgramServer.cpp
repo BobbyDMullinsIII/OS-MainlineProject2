@@ -12,6 +12,18 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
 ChatProgramServer::~ChatProgramServer()
 {}
 
+//Method for displaying message from client
+void ChatProgramServer::DisplayClientMessage(int clientID, std::string messageText)
+{
+    //Not Done
+}
+
+//Method for displaying message sent back to client
+void ChatProgramServer::DisplayReturnMessage(int clientID, std::string messageText)
+{
+    //Not Done
+}
+
 void ChatProgramServer::on_actionStartServer_triggered()
 {
     this->dialog.show();
