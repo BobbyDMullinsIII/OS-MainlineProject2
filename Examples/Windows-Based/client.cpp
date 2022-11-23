@@ -16,6 +16,20 @@ struct message {
 
 int main(int argc, char** argv)
 {
+    //Variables and section of code is needed for Windows Sockets
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    int err; 
+
+    wVersionRequested = MAKEWORD(2, 2);
+    err = WSAStartup(wVersionRequested, &wsaData);
+    if (err != 0)
+    {
+        cout << "WSAStartup failed with error: " << err;
+        return 1;
+    }
+
+
     struct addrinfo* myinfo; // Address record
     int sockdesc;
     char hostname[81];
@@ -91,6 +105,8 @@ int main(int argc, char** argv)
 
     // Close the socket
     _close(sockdesc);
+
+    WSACleanup(); //Method needed for Windows Sockets before program closes
 
     return 0;
 
