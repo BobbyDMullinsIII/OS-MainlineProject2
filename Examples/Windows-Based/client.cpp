@@ -92,10 +92,10 @@ int main(int argc, char** argv)
     cout << "  cvalue: " << mymessage.cvalue << endl;
 
     // Send the message to the server
-    _write(sockdesc, (char*)&mymessage, sizeof(message));
+    send(sockdesc, (char*)&mymessage, sizeof(message), 0);
 
     // Read back exactly one message
-    value = _read(sockdesc, (char*)&mymessage, sizeof(message));
+    value = recv(sockdesc, (char*)&mymessage, sizeof(message), 0);
 
     // Display the received message
     cout << "Client gets back: " << endl;
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
     cout << "  cvalue: " << mymessage.cvalue << endl;
 
     // Close the socket
-    _close(sockdesc);
+    closesocket(sockdesc);
 
     WSACleanup(); //Method needed for Windows Sockets before program closes
 
