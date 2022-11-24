@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 				// Read exactly one message
 			// Note that the first parameter of read is the returned
 			// value from accept( ) above.
-			value = send(connection, (char*)&mymessage, sizeof(message), 0);
+			value = recv(connection, (char*)&mymessage, sizeof(message), 0);
 			cout << "value = " << value << endl;
 			// Display the message
 			cout << "Server received: " << endl;
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 			cout << "  dvalue: " << mymessage.dvalue << endl;
 			cout << "  cvalue: " << mymessage.cvalue << endl;
 			// Send the response string back to the client
-			recv(connection, (char*)&mymessage, sizeof(message), 0);
+			send(connection, (char*)&mymessage, sizeof(message), 0);
 
 			// Then quit
 			break;
