@@ -98,6 +98,7 @@
     <QtUic Include="InitServerDialog.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="date.h" />
     <ClInclude Include="User.h" />
     <QtMoc Include="InitServerDialog.h" />
     <ClInclude Include="Server.h" />

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "date.h"
 #include "User.h"
 #include "Client.h"
 #include "ClientController.h"

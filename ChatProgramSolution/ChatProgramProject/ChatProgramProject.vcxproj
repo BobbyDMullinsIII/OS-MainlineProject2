@@ -111,6 +111,7 @@
     <ClInclude Include="Client.h" />
     <QtMoc Include="ConnectDialog.h" />
     <ClInclude Include="ClientController.h" />
+    <ClInclude Include="date.h" />
     <ClInclude Include="StaticMethods.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
