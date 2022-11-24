@@ -66,7 +66,9 @@ void ServerController::HandleClient(int connection)
 	int userID;			   //Current ID of user
 	string userName;       //Variable for keeping username
 	message incomeMessage; //Variable for incoming messages from client
+	string inMsgToPrint;
 	message sentMessage;   //Variable for sent messages to client
+	string outMsgToPrint;
 
 	//The first message from client is their username
 	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
@@ -90,8 +92,7 @@ void ServerController::HandleClient(int connection)
 		else
 		{
 			//Prints incoming message out on GUI
-			string inMsgToPrint = "";
-			//Appends current time, date, and new line
+			inMsgToPrint = "";
 			inMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
 			inMsgToPrint.append(userName + "\n"); //Appends username and new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
@@ -103,7 +104,7 @@ void ServerController::HandleClient(int connection)
 			strcpy_s(sentMessage.cvalue, "Server: Message received");
 
 			//Prints outgoing message out on GUI
-			string outMsgToPrint = "";
+			outMsgToPrint = "";
 			outMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
 			outMsgToPrint.append("Server\n"); //Appends username and new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
