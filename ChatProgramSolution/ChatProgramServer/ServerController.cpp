@@ -3,10 +3,15 @@
 #include <string>
 #include <vector>
 #include <thread>
-#include "Message.h"
 #include "Server.h"
 #include "ServerController.h"
 using namespace std;
+
+struct message {
+	int    ivalue;
+	double dvalue;
+	char   cvalue[56];
+};
 
 //Constructor
 ServerController::ServerController()
@@ -46,8 +51,8 @@ void ServerController::RunServerLoop(string port)
 		}
 		else
 		{
-			//Will create new thread for each client that is accepted (Not finished)
-			new thread(HandleClient, server.connection);
+			//Will create new thread for each client that is accepted
+			new thread(&HandleClient, server.connection);
 		}
 	}
 }
@@ -55,5 +60,47 @@ void ServerController::RunServerLoop(string port)
 //Method for handling a client connection
 void ServerController::HandleClient(int connection)
 {
-	//Not finished
+	int currentConnection = connection;
+	int messageVal;
+	int userID;			   //Current ID of user
+	string userName;       //Variable for keeping username
+	message incomeMessage; //Variable for incoming messages from client
+	message sentMessage;   //Variable for sent messages to client
+
+	//The first message from client is their username
+	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+    userName = incomeMessage.cvalue;
+
+
+
+	//Infinite loop to keep reading and writing messages
+	for (;;)
+	{
+		//Reads a message from client
+		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+
+		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
+		if (incomeMessage.cvalue == "DISCONNECT")
+		{
+			closesocket(currentConnection);
+
+			break;
+		}
+		else
+		{
+			//Prints incoming message out on GUI
+			//(NOT DONE)
+
+			//Increments message variables and prepares message for sending back to client
+			sentMessage.ivalue = incomeMessage.ivalue + 1;
+			sentMessage.dvalue = incomeMessage.dvalue + 1.0;
+			strcpy_s(sentMessage.cvalue, "Server: Message received");
+
+			//Prints outgoing message out on GUI
+			//(NOT DONE)
+
+			//Sends message back to client
+			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+		}
+	}
 }

@@ -9,7 +9,8 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
-#include "Message.h"
+
+
 #include "Server.h"
 
 //Parameterized Constructor

@@ -2,11 +2,16 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "Message.h"
 #include "User.h"
 #include "Client.h"
 #include "ClientController.h"
 using namespace std;
+
+struct message {
+	int    ivalue;
+	double dvalue;
+	char   cvalue[56];
+};
 
 //Constructor
 ClientController::ClientController()

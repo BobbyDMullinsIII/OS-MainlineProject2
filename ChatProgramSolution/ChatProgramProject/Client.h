@@ -11,7 +11,6 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
-#include "Message.h"
 #include "User.h"
 #include "Client.h"
 
@@ -25,7 +24,6 @@ public:
     struct addrinfo* myinfo;
     int sockdesc;
     char portnum[81];
-    Message mymessage;
     int connection;
     int value;
 

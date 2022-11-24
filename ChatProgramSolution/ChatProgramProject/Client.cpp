@@ -9,7 +9,6 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
-#include "Message.h"
 #include "User.h"
 #include "Client.h"
 

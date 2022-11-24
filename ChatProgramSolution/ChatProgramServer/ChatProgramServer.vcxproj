@@ -86,10 +86,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="InitServerDialog.cpp" />
-    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerController.cpp" />
     <ClCompile Include="StaticMethods.cpp" />
+    <ClCompile Include="User.cpp" />
     <QtRcc Include="ChatProgramServer.qrc" />
     <QtUic Include="ChatProgramServer.ui" />
     <QtMoc Include="ChatProgramServer.h" />
@@ -98,8 +98,8 @@
     <QtUic Include="InitServerDialog.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="User.h" />
     <QtMoc Include="InitServerDialog.h" />
-    <ClInclude Include="Message.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerController.h" />
     <ClInclude Include="StaticMethods.h" />

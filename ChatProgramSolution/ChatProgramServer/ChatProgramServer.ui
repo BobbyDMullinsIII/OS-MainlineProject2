@@ -36,8 +36,8 @@ color: white; </string>
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(100, 100, 100);
-color:white;
+     <string notr="true">background-color: rgb(150, 150, 150);
+color:black;
 font: 14pt &quot;Segoe UI&quot;;</string>
     </property>
    </widget>
@@ -57,8 +57,8 @@ font: 14pt &quot;Segoe UI&quot;;</string>
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(100, 100, 100);
-color:white;
+     <string notr="true">background-color: rgb(150, 150, 150);
+color:black;
 font: 14pt &quot;Segoe UI&quot;;</string>
     </property>
    </widget>
@@ -80,7 +80,7 @@ font: 14pt &quot;Segoe UI&quot;;</string>
      <string>Incoming Messages</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="sentTextObject_2">
+   <widget class="QTextBrowser" name="clientTextObject">
     <property name="geometry">
      <rect>
       <x>599</x>
