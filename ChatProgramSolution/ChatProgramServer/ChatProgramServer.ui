@@ -6,20 +6,144 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>800</width>
+    <height>440</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>ChatProgramServer</string>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <property name="windowTitle">
+   <string>Chat Program Server</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: black;
+color: white; </string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTextBrowser" name="incomingTextObject">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>40</y>
+      <width>300</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(100, 100, 100);
+color:white;
+font: 14pt &quot;Segoe UI&quot;;</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="sentTextObject">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>40</y>
+      <width>300</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(100, 100, 100);
+color:white;
+font: 14pt &quot;Segoe UI&quot;;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="serverTitleLabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Incoming Messages</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="sentTextObject_2">
+    <property name="geometry">
+     <rect>
+      <x>599</x>
+      <y>40</y>
+      <width>201</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(63, 63, 63);
+color:white;
+font: 14pt &quot;Segoe UI&quot;;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="serverTitleLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>0</y>
+      <width>301</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Outgoing Messages</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="serverTitleLabel_3">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>0</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Clients</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>800</width>
      <height>22</height>
     </rect>
    </property>

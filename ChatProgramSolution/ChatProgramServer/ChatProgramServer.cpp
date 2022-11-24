@@ -6,23 +6,13 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
 {
     ui.setupUi(this); //Sets up this window for the server
 
-    QMainWindow::setStyleSheet("background-color: lightblue; color: black;"); //Sets background color of window to light blue and text to black
+    //Sets absolute objest names and background colors of text objects
+    ui.sentTextObject->setObjectName("sentTextObject");
+    ui.incomingTextObject->setObjectName("incomingTextObject");
 }
 
 ChatProgramServer::~ChatProgramServer()
 {}
-
-//Method for displaying message from client
-void ChatProgramServer::DisplayClientMessage(int clientID, std::string messageText)
-{
-    //Not Done
-}
-
-//Method for displaying message sent back to client
-void ChatProgramServer::DisplayReturnMessage(int clientID, std::string messageText)
-{
-    //Not Done
-}
 
 void ChatProgramServer::on_actionStartServer_triggered()
 {

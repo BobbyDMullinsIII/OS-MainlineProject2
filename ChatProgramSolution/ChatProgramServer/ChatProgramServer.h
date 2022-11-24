@@ -4,6 +4,7 @@
 #include "ui_ChatProgramServer.h"
 #include "InitServerDialog.h"
 #include "ServerController.h"
+#include "ChatProgramServer.h"
 
 class ChatProgramServer : public QMainWindow
 {
@@ -15,10 +16,14 @@ public:
 
     InitServerDialog dialog;
     ServerController SControl;
-    static void DisplayClientMessage(int clientID, std::string messageText); //Method for displaying message from client
-    static void DisplayReturnMessage(int clientID, std::string messageText); //Method for displaying message sent back to client
+
+signals:
+    //void modifyIncomingTextObject();
+    //void modifySentTextObject();
 
 private slots:
+    //void modifyIncomingTextObject();
+    //void modifySentTextObject();
     void on_actionStartServer_triggered();
     void on_exitActionButton_triggered(); //Buttons in the menubar menus use the "triggered" event
                                           //Regular buttons on the form might use the "clicked" event instead
