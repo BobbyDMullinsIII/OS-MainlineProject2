@@ -21,6 +21,7 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
 
     SControl = ServerController();
 
+    QObject::connect(&dialog, SIGNAL(startServerSignal(std::string)), this, SLOT(RunServerProgram(std::string)));
     QObject::connect(&SControl.server, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)));
     QObject::connect(&SControl.server, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)));
 }
