@@ -12,6 +12,16 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
     ui.sentTextObject->setObjectName("sentTextObject");
     ui.incomingTextObject->setObjectName("incomingTextObject");
     ui.clientTextObject->setObjectName("clientTextObject");
+
+    //Set all strings to empty for now
+    this->incomeString = "";       //Big string for appending all incoming messages to for display on ui (incomingTextObject)
+    this->sentString = "";         //Big string for appending all incoming messages to for display on ui (sentTextObject)
+    this->userDisplayString = "";  //Big string for displaying all currently connected clients on ui (clientTextObject)
+
+    SControl = new ServerController();
+
+    QObject::connect(SControl, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)));
+    QObject::connect(SControl, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)));
 }
 
 ChatProgramServer::~ChatProgramServer()
@@ -25,6 +35,20 @@ void ChatProgramServer::on_actionStartServer_triggered()
 void ChatProgramServer::on_exitActionButton_triggered()
 {
     exit(0);
+}
+
+void ChatProgramServer::appendIncomeMessage(std::string incomeMessage)
+{
+    //Appends message to incomeString
+    this->incomeString.append("\n\n" + incomeMessage);
+    ui.incomingTextObject->append(QString::fromStdString("\n\n" + incomeMessage));
+}
+
+void ChatProgramServer::appendSentMessage(std::string sentMessage)
+{
+    //Appends message to sentString
+    this->sentString.append("\n\n" + sentMessage);
+    ui.sentTextObject->append(QString::fromStdString("\n\n" + sentMessage));
 }
 
 void ChatProgramServer::AddUser(std::string userName, int userID)

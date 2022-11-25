@@ -55,11 +55,11 @@
     <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CopyableQObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,6 +72,9 @@
     <ClInclude Include="date.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CopyableQObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="InitServerDialog.ui">
@@ -82,5 +85,11 @@
     <QtMoc Include="InitServerDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="ServerController.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

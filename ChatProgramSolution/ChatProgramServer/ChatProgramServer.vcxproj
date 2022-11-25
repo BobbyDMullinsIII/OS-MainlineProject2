@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CopyableQObject.cpp" />
     <ClCompile Include="InitServerDialog.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerController.cpp" />
@@ -98,12 +99,16 @@
     <QtUic Include="InitServerDialog.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CopyableQObject.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="User.h" />
     <QtMoc Include="InitServerDialog.h" />
     <ClInclude Include="Server.h" />
-    <ClInclude Include="ServerController.h" />
+    <QtMoc Include="ServerController.h" />
     <ClInclude Include="StaticMethods.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

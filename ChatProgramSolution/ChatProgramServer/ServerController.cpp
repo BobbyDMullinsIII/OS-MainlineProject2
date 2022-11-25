@@ -20,6 +20,11 @@ ServerController::ServerController()
 
 }
 
+//Copy Constructor
+ServerController::ServerController(const ServerController& s)
+{
+
+}
 
 //Deconstructor
 ServerController::~ServerController() {}
@@ -29,7 +34,8 @@ void ServerController::RunServerProgram(string port)
 {
 	//Creates master thread for loop so program doesnt freeze during infinite loop
 	//2 threads so far - 1 for program main execution, 1 for server loop
-	thread loopThread(RunServerLoop, port);
+	std::thread loopThread(&RunServerLoop, port);
+	loopThread.detach();
 }
 
 //Method for running server loop
@@ -53,7 +59,7 @@ void ServerController::RunServerLoop(string port)
 		else
 		{
 			//Will create new thread for each client that is accepted
-			new thread(&HandleClient, server.connection);
+			std::thread(&HandleClient, server.connection).detach();
 		}
 	}
 }
@@ -92,11 +98,12 @@ void ServerController::HandleClient(int connection)
 		else
 		{
 			//Prints incoming message out on GUI
-			inMsgToPrint = "";
+			inMsgToPrint = ""; //Set to empty for new message
 			inMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
 			inMsgToPrint.append(userName + "\n"); //Appends username and new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
-			//(NOT DONE)
+			inMsgToPrint.append("\n"); //Appends another new line
+			emit appendIncomeMessageSignal(inMsgToPrint); //Sends inMsgToPrint to main ui
 
 			//Increments message variables and prepares message for sending back to client
 			sentMessage.ivalue = incomeMessage.ivalue + 1;
@@ -104,11 +111,12 @@ void ServerController::HandleClient(int connection)
 			strcpy_s(sentMessage.cvalue, "Server: Message received");
 
 			//Prints outgoing message out on GUI
-			outMsgToPrint = "";
+			outMsgToPrint = ""; //Set to empty for new message
 			outMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
 			outMsgToPrint.append("Server\n"); //Appends username and new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
-			//(NOT DONE)
+			outMsgToPrint.append("\n"); //Appends another new line
+			emit appendSentMessageSignal(outMsgToPrint); //Sends outMsgToPrint to main ui
 
 			//Sends message back to client
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);

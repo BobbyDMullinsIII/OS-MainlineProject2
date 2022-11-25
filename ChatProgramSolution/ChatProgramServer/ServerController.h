@@ -2,25 +2,27 @@
 
 #include <string>
 #include <vector>
+#include <QObject>
+#include <QVariant>
+#include "CopyableQObject.h"
 #include "Server.h"
 #include "ServerController.h"
 
-class ServerController
+class ServerController : public CopyableQObject
 {
+    Q_OBJECT
+
 public:
     ServerController();
+    ServerController(const ServerController& s);
     ~ServerController();
 
+    Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
+    Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
+
     void RunServerProgram(std::string port);
-    static void RunServerLoop(std::string port);
-    static void HandleClient(int connection);
-
-
-signals:
-    void modifyIncomingTextObject(std::string newString);
-    void modifySentTextObject(std::string newString);
-
+    void RunServerLoop(std::string port);
+    void HandleClient(int connection);
 
 private:
 };
-
