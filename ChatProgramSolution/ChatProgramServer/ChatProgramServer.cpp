@@ -1,4 +1,5 @@
 #include <vector>
+#include <thread>
 #include "User.h"
 #include "ChatProgramServer.h"
 #include "InitServerDialog.h"
@@ -27,14 +28,23 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
 ChatProgramServer::~ChatProgramServer()
 {}
 
-void ChatProgramServer::on_actionStartServer_triggered()
+void ChatProgramServer::AddUser(std::string userName, int userID)
 {
-    this->dialog.show();
+    User newUser = User(userName, userID);
+    this->userList.push_back(newUser);
 }
 
-void ChatProgramServer::on_exitActionButton_triggered()
+void ChatProgramServer::RemoveUser(int userID)
 {
-    exit(0);
+
+}
+
+//Method for running overall server program using threads
+void ChatProgramServer::RunServerProgram(std::string port)
+{
+    //Creates master thread for loop so program doesnt freeze during infinite loop
+    //2 threads so far - 1 for program main execution, 1 for server loop
+    std::thread(&ServerController::RunServerLoop, &this->SControl, port).detach();
 }
 
 void ChatProgramServer::appendIncomeMessage(std::string incomeMessage)
@@ -51,13 +61,12 @@ void ChatProgramServer::appendSentMessage(std::string sentMessage)
     ui.sentTextObject->append(QString::fromStdString("\n\n" + sentMessage));
 }
 
-void ChatProgramServer::AddUser(std::string userName, int userID)
+void ChatProgramServer::on_actionStartServer_triggered()
 {
-    User newUser = User(userName, userID);
-    this->userList.push_back(newUser);
+    this->dialog.show();
 }
 
-void ChatProgramServer::RemoveUser(int userID)
+void ChatProgramServer::on_exitActionButton_triggered()
 {
-
+    exit(0);
 }

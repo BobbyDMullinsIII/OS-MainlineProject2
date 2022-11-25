@@ -28,6 +28,7 @@ public:
     ServerController SControl;
 
 public slots:
+    void RunServerProgram(std::string port);
     void appendIncomeMessage(std::string incomeMessage);
     void appendSentMessage(std::string sentMessage);
 

@@ -29,15 +29,6 @@ ServerController::ServerController(const ServerController& s)
 //Deconstructor
 ServerController::~ServerController() {}
 
-//Method for running overall server program using threads
-void ServerController::RunServerProgram(string port)
-{
-	//Creates master thread for loop so program doesnt freeze during infinite loop
-	//2 threads so far - 1 for program main execution, 1 for server loop
-	std::thread loopThread(&RunServerLoop, port);
-	loopThread.detach();
-}
-
 //Method for running server loop
 void ServerController::RunServerLoop(string port)
 {

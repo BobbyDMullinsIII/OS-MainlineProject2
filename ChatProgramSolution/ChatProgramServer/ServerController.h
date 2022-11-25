@@ -20,7 +20,6 @@ public:
     Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
     Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
 
-    void RunServerProgram(std::string port);
     void RunServerLoop(std::string port);
     void HandleClient(int connection);
 
