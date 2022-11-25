@@ -8,16 +8,10 @@
 #include "ServerController.h"
 using namespace std;
 
-struct message {
-	int    ivalue;
-	double dvalue;
-	char   cvalue[56];
-};
-
 //Constructor
 ServerController::ServerController()
 {
-
+	this->server = Server();
 }
 
 //Copy Constructor
@@ -32,16 +26,15 @@ ServerController::~ServerController() {}
 //Method for running server loop
 void ServerController::RunServerLoop(string port)
 {
-	Server server = Server(port); //Creates new server object and initializes it
-	server.listenSocket(); //Server starts listening to the socket
+	 this->server.InitializeServer(port); //Initializes server
 
 	//Infinite loop for receiving client connections
 	for (;;)
 	{
 		//Loop will wait here until accept detects any new connections
 		//Threads are needed because the GUI would not work because it would be stuck here without going on a different thread
-		server.connection = accept(server.sockdesc, NULL, NULL);
-		if (server.connection < 0)
+		this->server.connection = accept(this->server.sockdesc, NULL, NULL);
+		if (this->server.connection < 0)
 		{
 			QMessageBox messageBox;
 			messageBox.critical(0, "Accept Client Error", "There was an error accepting a client.");
@@ -50,67 +43,7 @@ void ServerController::RunServerLoop(string port)
 		else
 		{
 			//Will create new thread for each client that is accepted
-			std::thread(&HandleClient, server.connection).detach();
-		}
-	}
-}
-
-//Method for handling a client connection
-void ServerController::HandleClient(int connection)
-{
-	int currentConnection = connection;
-	int messageVal;
-	int userID;			   //Current ID of user
-	string userName;       //Variable for keeping username
-	message incomeMessage; //Variable for incoming messages from client
-	string inMsgToPrint;
-	message sentMessage;   //Variable for sent messages to client
-	string outMsgToPrint;
-
-	//The first message from client is their username
-	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
-    userName = incomeMessage.cvalue;
-
-
-
-	//Infinite loop to keep reading and writing messages
-	for (;;)
-	{
-		//Reads a message from client
-		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
-
-		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
-		if (incomeMessage.cvalue == "DISCONNECT")
-		{
-			closesocket(currentConnection);
-
-			break;
-		}
-		else
-		{
-			//Prints incoming message out on GUI
-			inMsgToPrint = ""; //Set to empty for new message
-			inMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
-			inMsgToPrint.append(userName + "\n"); //Appends username and new line
-			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
-			inMsgToPrint.append("\n"); //Appends another new line
-			emit appendIncomeMessageSignal(inMsgToPrint); //Sends inMsgToPrint to main ui
-
-			//Increments message variables and prepares message for sending back to client
-			sentMessage.ivalue = incomeMessage.ivalue + 1;
-			sentMessage.dvalue = incomeMessage.dvalue + 1.0;
-			strcpy_s(sentMessage.cvalue, "Server: Message received");
-
-			//Prints outgoing message out on GUI
-			outMsgToPrint = ""; //Set to empty for new message
-			outMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
-			outMsgToPrint.append("Server\n"); //Appends username and new line
-			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
-			outMsgToPrint.append("\n"); //Appends another new line
-			emit appendSentMessageSignal(outMsgToPrint); //Sends outMsgToPrint to main ui
-
-			//Sends message back to client
-			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+			std::thread(&Server::HandleClient, this->server, this->server.connection).detach();
 		}
 	}
 }

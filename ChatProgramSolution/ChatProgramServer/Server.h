@@ -11,14 +11,16 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
-
-
+#include <QObject>
+#include <QVariant>
+#include "CopyableQObject.h"
 #include "Server.h"
 
-class Server
+class Server : public CopyableQObject
 {
+	Q_OBJECT
 public:
-	Server(std::string port);
+	Server();
 	~Server();
 
 	struct addrinfo* myinfo;
@@ -27,11 +29,16 @@ public:
 	int connection;
 	int value;
 
+	void InitializeServer(std::string port);
 	void createPortNum(std::string port);
 	void createSockDesc();
 	void createAddressRecord();
 	void bindSocket();
 	void listenSocket();
+	void HandleClient(int connection);
+
+	Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
+	Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
 
 private:
 

@@ -103,8 +103,8 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="User.h" />
     <QtMoc Include="InitServerDialog.h" />
-    <ClInclude Include="Server.h" />
-    <QtMoc Include="ServerController.h" />
+    <QtMoc Include="Server.h" />
+    <ClInclude Include="ServerController.h" />
     <ClInclude Include="StaticMethods.h" />
   </ItemGroup>
   <ItemGroup>

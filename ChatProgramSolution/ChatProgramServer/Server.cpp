@@ -9,21 +9,33 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
-
-
+#include "date.h"
 #include "Server.h"
 
-//Parameterized Constructor
-Server::Server(std::string port)
+struct message {
+	int    ivalue;
+	double dvalue;
+	char   cvalue[56];
+};
+
+//Constructor
+Server::Server()
+{
+
+}
+
+//Deconstructor
+Server::~Server() {}
+
+//Method for initializing server
+void Server::InitializeServer(std::string port)
 {
 	createPortNum(port);
 	createSockDesc();
 	createAddressRecord();
 	bindSocket();
+	listenSocket();
 }
-
-//Deconstructor
-Server::~Server() {}
 
 //Method for creating port number for the server
 void Server::createPortNum(std::string port)
@@ -114,5 +126,63 @@ void Server::listenSocket()
 		QMessageBox messageBox;
 		messageBox.critical(0, "Server Listen Error", message.c_str());
 		messageBox.setFixedSize(640, 480);
+	}
+}
+
+//Method for handling a client connection
+void Server::HandleClient(int connection)
+{
+	int currentConnection = connection;
+	int messageVal;
+	int userID;			      //Current ID of user
+	std::string userName;     //Variable for keeping username
+	message incomeMessage;    //Variable for incoming messages from client
+	std::string inMsgToPrint;
+	message sentMessage;      //Variable for sent messages to client
+	std::string outMsgToPrint;
+
+	//The first message from client is their username
+	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+	userName = incomeMessage.cvalue;
+
+	//Infinite loop to keep reading and writing messages
+	for (;;)
+	{
+		//Reads a message from client
+		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+
+		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
+		if (incomeMessage.cvalue == "DISCONNECT")
+		{
+			closesocket(currentConnection);
+
+			break;
+		}
+		else
+		{
+			//Prints incoming message out on GUI
+			inMsgToPrint = ""; //Set to empty for new message
+			inMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
+			inMsgToPrint.append(userName + "\n"); //Appends username and new line
+			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
+			inMsgToPrint.append("\n"); //Appends another new line
+			emit appendIncomeMessageSignal(inMsgToPrint); //Sends inMsgToPrint to main ui
+
+			//Increments message variables and prepares message for sending back to client
+			sentMessage.ivalue = incomeMessage.ivalue + 1;
+			sentMessage.dvalue = incomeMessage.dvalue + 1.0;
+			strcpy_s(sentMessage.cvalue, "Server: Message received");
+
+			//Prints outgoing message out on GUI
+			outMsgToPrint = ""; //Set to empty for new message
+			outMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
+			outMsgToPrint.append("Server\n"); //Appends username and new line
+			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
+			outMsgToPrint.append("\n"); //Appends another new line
+			emit appendSentMessageSignal(outMsgToPrint); //Sends outMsgToPrint to main ui
+
+			//Sends message back to client
+			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+		}
 	}
 }
