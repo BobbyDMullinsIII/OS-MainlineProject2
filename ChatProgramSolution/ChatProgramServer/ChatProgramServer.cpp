@@ -18,10 +18,10 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
     this->sentString = "";         //Big string for appending all incoming messages to for display on ui (sentTextObject)
     this->userDisplayString = "";  //Big string for displaying all currently connected clients on ui (clientTextObject)
 
-    SControl = new ServerController();
+    SControl = ServerController();
 
-    QObject::connect(SControl, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)));
-    QObject::connect(SControl, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)));
+    QObject::connect(&SControl, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)));
+    QObject::connect(&SControl, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)));
 }
 
 ChatProgramServer::~ChatProgramServer()

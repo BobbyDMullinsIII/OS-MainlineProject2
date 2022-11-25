@@ -25,7 +25,7 @@ public:
     std::string sentString;         //Big string for appending all incoming messages to for display on ui (sentTextObject)
     std::string userDisplayString;  //Big string for displaying all currently connected clients on ui (clientTextObject)
     std::vector<User> userList;     //Vector of users and/or clients currently connected to server (Will modify userDisplayString when changed)
-    ServerController *SControl;
+    ServerController SControl;
 
 public slots:
     void appendIncomeMessage(std::string incomeMessage);
