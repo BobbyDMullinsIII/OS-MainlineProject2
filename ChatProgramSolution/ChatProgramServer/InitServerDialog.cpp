@@ -19,7 +19,7 @@ void InitServerDialog::on_okButton_clicked()
 {
     std::string port; //String port number
 
-    //port = QString::toStdString(ui.portTextEdit->toPlainText()); //Get port number from portTextEdit and converted to string
+    port = ui.portTextEdit->toPlainText().toStdString(); //Get port number from portTextEdit and converted to string
 
-    emit startServerSignal("2000"); //Emit to main window and start server from there
+    emit startServerSignal(port); //Emit to main window and start server from there
 }

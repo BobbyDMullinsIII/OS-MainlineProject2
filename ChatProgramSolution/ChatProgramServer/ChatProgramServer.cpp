@@ -24,6 +24,7 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
     QObject::connect(&dialog, SIGNAL(startServerSignal(std::string)), this, SLOT(RunServerProgram(std::string)));
     QObject::connect(&SControl.server, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)));
     QObject::connect(&SControl.server, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)));
+    QObject::connect(&SControl.server, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
 }
 
 ChatProgramServer::~ChatProgramServer()
@@ -60,6 +61,18 @@ void ChatProgramServer::appendSentMessage(std::string sentMessage)
     //Appends message to sentString
     this->sentString.append("\n\n" + sentMessage);
     ui.sentTextObject->append(QString::fromStdString("\n\n" + sentMessage));
+}
+
+void ChatProgramServer::displayErrorMessage(bool doExit, std::string title, std::string text) 
+{
+    QMessageBox messageBox;
+    messageBox.critical(0, title.c_str(), text.c_str());
+    messageBox.setFixedSize(640, 480);
+
+    if (doExit == true)
+    {
+        exit(0);
+    }
 }
 
 void ChatProgramServer::on_actionStartServer_triggered()

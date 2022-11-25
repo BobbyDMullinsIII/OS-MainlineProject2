@@ -37,8 +37,11 @@ public:
 	void listenSocket();
 	void HandleClient(int connection);
 
+	void sendError(bool doExit, std::string title, std::string text);
+
 	Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
 	Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
+	Q_SIGNAL void sendErrorMessage(bool exit, std::string title, std::string text);
 
 private:
 

@@ -68,9 +68,7 @@ void Server::createSockDesc()
 		std::string message = "There was an error creating the socket in the server.\nsockdesc: ";
 		message += std::to_string(this->sockdesc);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server Socket Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Server Socket Error", message); //Send error
 	}
 }
 
@@ -87,9 +85,7 @@ void Server::createAddressRecord()
 		std::string message = "There was an error getting the address in the server.\nreturnVal: ";
 		message += std::to_string(returnVal);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server Address Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Server Address Error", message); //Send error
 	}
 }
 
@@ -105,9 +101,7 @@ void Server::bindSocket()
 		std::string message = "There was an error binding the socket to an address in the server.\nreturnVal: ";
 		message += std::to_string(returnVal);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server Binding Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Server Binding Error", message); //Send error
 	}
 }
 
@@ -123,9 +117,7 @@ void Server::listenSocket()
 		std::string message = "There was an error in listen in the server.\nreturnVal: ";
 		message += std::to_string(returnVal);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server Listen Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Server Listen Error", message); //Send error
 	}
 }
 
@@ -185,4 +177,10 @@ void Server::HandleClient(int connection)
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 		}
 	}
+}
+
+//Method for sending error message to main ui to show message
+void Server::sendError(bool doExit, std::string title, std::string text)
+{
+	emit sendErrorMessage(doExit, title, text); //Emit error message to main window
 }

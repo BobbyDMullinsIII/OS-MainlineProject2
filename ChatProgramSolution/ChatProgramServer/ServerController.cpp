@@ -36,9 +36,7 @@ void ServerController::RunServerLoop(string port)
 		this->server.connection = accept(this->server.sockdesc, NULL, NULL);
 		if (this->server.connection < 0)
 		{
-			QMessageBox messageBox;
-			messageBox.critical(0, "Accept Client Error", "There was an error accepting a client.");
-			messageBox.setFixedSize(640, 480);
+			this->server.sendError(false, "Accept Client Error", "There was an error accepting a client.");
 		}
 		else
 		{

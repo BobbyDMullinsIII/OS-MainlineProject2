@@ -31,6 +31,7 @@ public slots:
     void RunServerProgram(std::string port);
     void appendIncomeMessage(std::string incomeMessage);
     void appendSentMessage(std::string sentMessage);
+    void displayErrorMessage(bool doExit, std::string title, std::string text);
 
 private slots:
     void on_actionStartServer_triggered();
