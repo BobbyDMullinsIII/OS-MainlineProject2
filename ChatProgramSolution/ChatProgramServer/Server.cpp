@@ -140,6 +140,10 @@ void Server::HandleClient(int connection)
 	message sentMessage;      //Variable for sent messages to client
 	std::string outMsgToPrint;
 
+	//Sets userName and userID to placeholder values for testing and error-checking
+	userName = "Placeholder Username";
+	userID = -1;
+
 	//The first message from client is their username
 	//messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
 	//userName = incomeMessage.cvalue;
