@@ -39,27 +39,27 @@ void ServerController::RunServerLoop(string port)
 		std::string message = "There was an error with WSAStartup in the server. \nError: ";
 		message += std::to_string(err);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Server WSAStartup Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		this->server.sendError(false, "Server WSAStartup Error", message.c_str());
 	}
-
-	 this->server.InitializeServer(port); //Initializes server
-
-	//Infinite loop for receiving client connections
-	for (;;)
+	else
 	{
-		//Loop will wait here until accept detects any new connections
-		//Threads are needed because the GUI would not work because it would be stuck here without going on a different thread
-		this->server.connection = accept(this->server.sockdesc, NULL, NULL);
-		if (this->server.connection < 0)
+		this->server.InitializeServer(port); //Initializes server
+
+		//Infinite loop for receiving client connections
+		for (;;)
 		{
-			this->server.sendError(false, "Accept Client Error", "There was an error accepting a client.");
-		}
-		else
-		{
-			//Will create new thread for each client that is accepted
-			std::thread(&Server::HandleClient, this->server, this->server.connection).detach();
+			//Loop will wait here until accept detects any new connections
+			//Threads are needed because the GUI would not work because it would be stuck here without going on a different thread
+			this->server.connection = accept(this->server.sockdesc, NULL, NULL);
+			if (this->server.connection < 0)
+			{
+				this->server.sendError(false, "Accept Client Error", "There was an error accepting a client.");
+			}
+			else
+			{
+				//Will create new thread for each client that is accepted
+				std::thread(&Server::HandleClient, this->server, this->server.connection).detach();
+			}
 		}
 	}
 }
