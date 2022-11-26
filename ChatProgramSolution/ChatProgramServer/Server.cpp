@@ -64,9 +64,13 @@ void Server::createSockDesc()
 	//Shows messagebox with message if error occurred creating server socket
 	if (this->sockdesc < 0)
 	{
+		int wsaError = WSAGetLastError(); //Gets last error if there was an error creating socket
+
 		//String to put into messagebox
 		std::string message = "There was an error creating the socket in the server.\nsockdesc: ";
 		message += std::to_string(this->sockdesc);
+		message += "\nWSA Error: ";
+		message += std::to_string(wsaError);
 
 		sendError(true, "Server Socket Error", message); //Send error
 	}

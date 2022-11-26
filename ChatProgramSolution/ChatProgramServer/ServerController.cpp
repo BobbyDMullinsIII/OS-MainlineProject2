@@ -26,6 +26,24 @@ ServerController::~ServerController() {}
 //Method for running server loop
 void ServerController::RunServerLoop(string port)
 {
+	//Variables and section of code is needed for Windows Sockets
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
+
+	wVersionRequested = MAKEWORD(2, 2);
+	err = WSAStartup(wVersionRequested, &wsaData);
+	if (err != 0)
+	{
+		//String to put into messagebox
+		std::string message = "There was an error with WSAStartup in the server. \nError: ";
+		message += std::to_string(err);
+
+		QMessageBox messageBox;
+		messageBox.critical(0, "Server WSAStartup Error", message.c_str());
+		messageBox.setFixedSize(640, 480);
+	}
+
 	 this->server.InitializeServer(port); //Initializes server
 
 	//Infinite loop for receiving client connections

@@ -19,31 +19,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //Variables and section of code is needed for Windows Sockets
-    WORD wVersionRequested;
-    WSADATA wsaData;
-    int err;
-
-    wVersionRequested = MAKEWORD(2, 2);
-    err = WSAStartup(wVersionRequested, &wsaData);
-    if (err != 0)
-    {
-        //String to put into messagebox
-        std::string message = "There was an error with WSAStartup in the server. \nError: ";
-        message += std::to_string(err);
-
-        QMessageBox messageBox;
-        messageBox.critical(0, "Server WSAStartup Error", message.c_str());
-        messageBox.setFixedSize(640, 480);
-
-        return 1;
-    }
-
     //Run server program
     ChatProgramServer swindow; //Main GUI of server program (Using Qt)
     swindow.show(); //Show main server GUI window
-
-    WSACleanup(); //Method needed for Windows Sockets before program closes
 
     return a.exec();
 }

@@ -82,5 +82,6 @@ void ChatProgramServer::on_actionStartServer_triggered()
 
 void ChatProgramServer::on_exitActionButton_triggered()
 {
+    WSACleanup(); //Method needed for Windows Sockets before program closes
     exit(0);
 }
