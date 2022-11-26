@@ -3,6 +3,7 @@
 #include "User.h"
 #include "ChatProgramServer.h"
 #include "InitServerDialog.h"
+#include "Server.h"
 #include "ServerController.h"
 
 ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
