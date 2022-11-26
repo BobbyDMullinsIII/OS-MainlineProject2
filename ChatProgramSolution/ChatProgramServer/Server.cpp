@@ -138,8 +138,8 @@ void Server::HandleClient(int connection)
 	std::string outMsgToPrint;
 
 	//The first message from client is their username
-	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
-	userName = incomeMessage.cvalue;
+	//messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+	//userName = incomeMessage.cvalue;
 
 	//Infinite loop to keep reading and writing messages
 	for (;;)
