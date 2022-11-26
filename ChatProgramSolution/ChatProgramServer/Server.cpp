@@ -21,7 +21,10 @@ struct message {
 //Constructor
 Server::Server()
 {
-
+	this->myinfo = NULL;
+	this->sockdesc = NULL;
+	this->portnum[81] = NULL;
+	this->connection = NULL;
 }
 
 //Deconstructor

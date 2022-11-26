@@ -27,7 +27,6 @@ public:
 	int sockdesc;
 	char portnum[81];
 	int connection;
-	int value;
 
 	void InitializeServer(std::string port);
 	void createPortNum(std::string port);
