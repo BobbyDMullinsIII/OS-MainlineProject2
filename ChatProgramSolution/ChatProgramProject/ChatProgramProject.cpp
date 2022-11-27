@@ -37,7 +37,7 @@ void ChatProgramProject::RunClientProgram(std::string port, std::string hostname
 {
     //Creates master thread for loop so program doesnt freeze during infinite loop
     //2 threads total - 1 for program main execution(GUI), 1 for client message send/receive loop
-    //std::thread(&CControl::RunClientLoop, &this->CControl, port, hostname, username).detach(); //THIS GIVES AN ERROR FOR SOME REASON
+    std::thread(&ClientController::RunClientLoop, &this->CControl, port, hostname, username).detach(); //THIS GIVES AN ERROR FOR SOME REASON
 }
 
 void ChatProgramProject::appendSentMessage(std::string sentMessage)
