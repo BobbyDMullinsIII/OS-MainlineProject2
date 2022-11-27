@@ -38,6 +38,8 @@ public:
     void createAddressRecord();
     void connectToHost();
 
+    void sendSentMessageUI(std::string smessage);
+    void sendIncomeMessageUI(std::string imessage);
     void sendError(bool doExit, std::string title, std::string text);
     void sendInfo(std::string title, std::string text);
 

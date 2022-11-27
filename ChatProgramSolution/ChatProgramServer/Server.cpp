@@ -159,7 +159,6 @@ void Server::HandleClient(int connection)
 		if (incomeMessage.cvalue == "DISCONNECT")
 		{
 			closesocket(currentConnection);
-
 			break;
 		}
 		else
@@ -170,7 +169,7 @@ void Server::HandleClient(int connection)
 			inMsgToPrint.append(userName + "\n"); //Appends username and new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
 			inMsgToPrint.append("\n"); //Appends another new line
-			emit appendIncomeMessageSignal(inMsgToPrint); //Sends inMsgToPrint to main ui
+			sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
 
 			//Increments message variables and prepares message for sending back to client
 			sentMessage.ivalue = incomeMessage.ivalue + 1;
@@ -183,12 +182,28 @@ void Server::HandleClient(int connection)
 			outMsgToPrint.append("Server\n"); //Appends username and new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
 			outMsgToPrint.append("\n"); //Appends another new line
-			emit appendSentMessageSignal(outMsgToPrint); //Sends outMsgToPrint to main ui
+			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
 
 			//Sends message back to client
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+
+			//For testing with example client.cc file
+			closesocket(currentConnection);
+			break;
 		}
 	}
+}
+
+//Method for sending incoming message to main ui
+void Server::sendIncomeMessageUI(std::string imessage)
+{
+	emit appendIncomeMessageSignal(imessage); //Sends to main ui
+}
+
+//Method for sending outgoing(sent) message to main ui
+void Server::sendSentMessageUI(std::string smessage)
+{
+	emit appendSentMessageSignal(smessage); //Sends to main ui
 }
 
 //Method for sending error message to main ui to show message

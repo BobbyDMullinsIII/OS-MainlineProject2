@@ -37,6 +37,8 @@ public:
 	void listenSocket();
 	void HandleClient(int connection);
 
+	void sendIncomeMessageUI(std::string imessage);
+	void sendSentMessageUI(std::string smessage);
 	void sendError(bool doExit, std::string title, std::string text);
 	void sendInfo(std::string title, std::string text);
 

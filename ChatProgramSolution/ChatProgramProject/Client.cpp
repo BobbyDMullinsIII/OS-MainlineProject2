@@ -127,6 +127,18 @@ void Client::connectToHost()
 	}
 }
 
+//Method for sending outgoing(sent) message to main ui
+void Client::sendSentMessageUI(std::string smessage)
+{
+	emit appendSentMessageSignal(smessage); //Sends to main ui
+}
+
+//Method for sending incoming message to main ui
+void Client::sendIncomeMessageUI(std::string imessage)
+{
+	emit appendIncomeMessageSignal(imessage); //Sends to main ui
+}
+
 //Method for sending error message to main ui to show message
 void Client::sendError(bool doExit, std::string title, std::string text)
 {

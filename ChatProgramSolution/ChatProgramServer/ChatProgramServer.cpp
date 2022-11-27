@@ -23,10 +23,10 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
     SControl = ServerController();
 
     QObject::connect(&dialog, SIGNAL(startServerSignal(std::string)), this, SLOT(RunServerProgram(std::string)), Qt::DirectConnection);
-    QObject::connect(&SControl.server, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::DirectConnection);
-    QObject::connect(&SControl.server, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::DirectConnection);
+    QObject::connect(&SControl.server, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::BlockingQueuedConnection);
+    QObject::connect(&SControl.server, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::BlockingQueuedConnection);
     QObject::connect(&SControl.server, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
-    QObject::connect(&SControl.server, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::DirectConnection);
+    QObject::connect(&SControl.server, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::BlockingQueuedConnection);
 }
 
 ChatProgramServer::~ChatProgramServer()
