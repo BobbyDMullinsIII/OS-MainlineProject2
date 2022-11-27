@@ -165,8 +165,9 @@ void Server::HandleClient(int connection)
 		{
 			//Prints incoming message out on GUI
 			inMsgToPrint = ""; //Set to empty for new message
-			inMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
-			inMsgToPrint.append(userName + "\n"); //Appends username and new line
+			inMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
+			inMsgToPrint = inMsgToPrint.substr(0, inMsgToPrint.find("."));
+			inMsgToPrint.append("\n" + userName + "\n"); //Appends username and new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
 			inMsgToPrint.append("\n"); //Appends another new line
 			sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
@@ -178,8 +179,9 @@ void Server::HandleClient(int connection)
 
 			//Prints outgoing message out on GUI
 			outMsgToPrint = ""; //Set to empty for new message
-			outMsgToPrint.append(date::format("%F %T", std::chrono::system_clock::now()) + "\n"); //Appends date and exact time and new line
-			outMsgToPrint.append("Server\n"); //Appends username and new line
+			outMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
+			outMsgToPrint = outMsgToPrint.substr(0, outMsgToPrint.find("."));
+			outMsgToPrint.append("\nServer\n"); //Appends username and new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
 			outMsgToPrint.append("\n"); //Appends another new line
 			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
@@ -188,8 +190,8 @@ void Server::HandleClient(int connection)
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
 			//For testing with example client.cc file
-			closesocket(currentConnection);
-			break;
+			//closesocket(currentConnection);
+			//break;
 		}
 	}
 }
