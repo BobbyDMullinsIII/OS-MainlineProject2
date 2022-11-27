@@ -19,7 +19,7 @@ struct message {
 //Constructor
 ClientController::ClientController()
 {
-
+	this->client = Client();
 }
 
 //Copy Constructor
@@ -34,7 +34,23 @@ ClientController::~ClientController() {}
 //Method for running overall program
 void ClientController::RunClientLoop(std::string port, std::string hostname, std::string username)
 {
-	 this->client = Client();
+    //Variables and section of code is needed for Windows Sockets
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    int err;
 
-	 //Code for client connect to server and send/receive loop goes here
+    wVersionRequested = MAKEWORD(2, 2);
+    err = WSAStartup(wVersionRequested, &wsaData);
+    if (err != 0)
+    {
+		//String to put into messagebox
+		std::string message = "There was an error with WSAStartup in the client. \nError: ";
+		message += std::to_string(err);
+
+		this->client.sendError(false, "Client WSAStartup Error", message.c_str());
+    }
+	else
+	{
+		//Code for client connect to server and send/receive loop goes here
+	}
 }
