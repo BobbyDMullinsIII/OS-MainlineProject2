@@ -1,8 +1,10 @@
+//Date library taken from GitHub
+#include "date.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-#include "date.h"
 #include "User.h"
 #include "Client.h"
 #include "ClientController.h"
@@ -20,22 +22,19 @@ ClientController::ClientController()
 
 }
 
+//Copy Constructor
+ClientController::ClientController(const ClientController& s)
+{
+
+}
 
 //Deconstructor
 ClientController::~ClientController() {}
 
 //Method for running overall program
-void ClientController::RunClientProgram()
+void ClientController::RunClientLoop(std::string port, std::string hostname, std::string username)
 {
-	Client client = InitializeClient();
-}
+	 this->client = Client();
 
-//Method for initializing client instance
-Client ClientController::InitializeClient()
-{
-	Client newClient;
-
-	//Code for initializing client goes here
-
-	return newClient;
+	 //Code for client connect to server and send/receive loop goes here
 }

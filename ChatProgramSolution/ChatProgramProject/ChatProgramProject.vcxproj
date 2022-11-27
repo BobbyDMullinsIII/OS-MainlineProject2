@@ -98,6 +98,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ConnectDialog.cpp" />
     <ClCompile Include="ClientController.cpp" />
+    <ClCompile Include="CopyableQObject.cpp" />
     <ClCompile Include="StaticMethods.cpp" />
     <ClCompile Include="User.cpp" />
     <QtRcc Include="ChatProgramProject.qrc" />
@@ -108,9 +109,10 @@
     <QtUic Include="ConnectDialog.ui" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h" />
+    <QtMoc Include="Client.h" />
     <QtMoc Include="ConnectDialog.h" />
     <ClInclude Include="ClientController.h" />
+    <ClInclude Include="CopyableQObject.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="StaticMethods.h" />
     <ClInclude Include="User.h" />

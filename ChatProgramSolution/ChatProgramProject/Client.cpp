@@ -1,3 +1,6 @@
+//Date library taken from GitHub
+#include "date.h"
+
 //Includes taken from example client.cc file (And Windows equivalents)
 #include <stdlib.h>
 #include <io.h>
@@ -8,9 +11,14 @@
 
 //Normal includes
 #include <string>
-#include <qmessagebox.h>
 #include "User.h"
 #include "Client.h"
+
+struct message {
+	int    ivalue;
+	double dvalue;
+	char   cvalue[56];
+};
 
 //Parameterized Constructor
 Client::Client()
@@ -20,6 +28,16 @@ Client::Client()
 
 //Deconstructor
 Client::~Client() {}
+
+//Method for initializing client
+void Client::InitializeClient(std::string port, std::string hostname)
+{
+	createHostName(hostname);
+	createPortNum(port);
+	createSockDesc();
+	createAddressRecord();
+	connectToHost();
+}
 
 //Method for creating hostname for the client
 void Client::createHostName(std::string host)
@@ -54,13 +72,15 @@ void Client::createSockDesc()
 	//Shows messagebox with message if error occurred creating client socket
 	if (this->sockdesc < 0)
 	{
+		int wsaError = WSAGetLastError(); //Gets last error if there was an error creating socket
+
 		//String to put into messagebox
 		std::string message = "There was an error creating the socket in the client.\nsockdesc: ";
 		message += std::to_string(this->sockdesc);
+		message += "\nWSA Error: ";
+		message += std::to_string(wsaError);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Client Socket Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Client Socket Error", message); //Send error
 	}
 }
 
@@ -77,16 +97,14 @@ void Client::createAddressRecord()
 		std::string message = "There was an error getting the address in the client.\nreturnVal: ";
 		message += std::to_string(returnVal);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Client Address Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Client Address Error", message); //Send error
 	}
 }
 
 //Method for connecting to the host from the client
 void Client::connectToHost()
 {
-	this->connection = connect(this->sockdesc, this->myinfo->ai_addr, this->myinfo->ai_addrlen);
+	this->connection = ::connect(this->sockdesc, this->myinfo->ai_addr, this->myinfo->ai_addrlen);
 
 	//Shows messagebox with message if error occurred connecting to the host
 	if (this->connection < 0)
@@ -95,9 +113,7 @@ void Client::connectToHost()
 		std::string message = "There was an error connecting to the host from the client.\nconnection: ";
 		message += std::to_string(this->connection);
 
-		QMessageBox messageBox;
-		messageBox.critical(0, "Client Host Connection Error", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		sendError(true, "Client Host Connection Error", message); //Send error
 	}
 	else //Shows client host connection if successful
 	{
@@ -109,4 +125,16 @@ void Client::connectToHost()
 		messageBox.information(0, "Client Host Connection Information", message.c_str());
 		messageBox.setFixedSize(640, 480);
 	}
+}
+
+//Method for sending error message to main ui to show message
+void Client::sendError(bool doExit, std::string title, std::string text)
+{
+	emit sendErrorMessage(doExit, title, text); //Emit error message to main window
+}
+
+//Method for sending error message to main ui to show message
+void Client::sendInfo(std::string title, std::string text)
+{
+	emit sendInfoMessage(title, text); //Emit error message to main window
 }

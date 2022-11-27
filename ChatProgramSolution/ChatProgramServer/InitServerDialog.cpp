@@ -1,3 +1,4 @@
+#include <QtWidgets/QDialog>
 #include "InitServerDialog.h"
 
 InitServerDialog::InitServerDialog(QWidget* parent) : QDialog(parent)

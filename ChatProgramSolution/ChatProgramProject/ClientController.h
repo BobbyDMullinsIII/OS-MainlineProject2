@@ -9,10 +9,12 @@ class ClientController
 {
 public:
     ClientController();
+    ClientController(const ClientController& c);
     ~ClientController();
 
-    void RunClientProgram();
-    Client InitializeClient();
+    Client client;
+
+    void RunClientLoop(std::string port, std::string hostname, std::string username);
 
 
 private:

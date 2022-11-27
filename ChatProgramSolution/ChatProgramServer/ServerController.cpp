@@ -1,9 +1,11 @@
+//Date library taken from GitHub
+#include "date.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <thread>
-#include "date.h"
 #include "Server.h"
 #include "ServerController.h"
 using namespace std;

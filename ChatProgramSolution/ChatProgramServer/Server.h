@@ -14,6 +14,7 @@
 #include <QObject>
 #include <QVariant>
 #include "CopyableQObject.h"
+#include "User.h"
 #include "Server.h"
 
 class Server : public CopyableQObject
@@ -37,10 +38,12 @@ public:
 	void HandleClient(int connection);
 
 	void sendError(bool doExit, std::string title, std::string text);
+	void sendInfo(std::string title, std::string text);
 
 	Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
 	Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
 	Q_SIGNAL void sendErrorMessage(bool exit, std::string title, std::string text);
+	Q_SIGNAL void sendInfoMessage(std::string title, std::string text);
 
 private:
 

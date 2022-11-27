@@ -55,11 +55,11 @@
     <ClCompile Include="ConnectDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CopyableQObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StaticMethods.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,6 +72,9 @@
     <ClInclude Include="date.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CopyableQObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ConnectDialog.ui">
@@ -80,6 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ConnectDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Client.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

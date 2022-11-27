@@ -1,3 +1,6 @@
+//Date library taken from GitHub
+#include "date.h"
+
 //Includes taken from example server.cc file (And Windows equivalents)
 #include <stdlib.h>
 #include <io.h>
@@ -8,8 +11,6 @@
 
 //Normal includes
 #include <string>
-#include <qmessagebox.h>
-#include "date.h"
 #include "Server.h"
 
 struct message {
@@ -194,4 +195,10 @@ void Server::HandleClient(int connection)
 void Server::sendError(bool doExit, std::string title, std::string text)
 {
 	emit sendErrorMessage(doExit, title, text); //Emit error message to main window
+}
+
+//Method for sending information message to main ui to show message
+void Server::sendInfo(std::string title, std::string text)
+{
+	emit sendInfoMessage(title, text); //Emit information message to main window
 }

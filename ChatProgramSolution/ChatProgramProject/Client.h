@@ -11,11 +11,15 @@
 //Normal includes
 #include <string>
 #include <qmessagebox.h>
+#include <QObject>
+#include <QVariant>
+#include "CopyableQObject.h"
 #include "User.h"
 #include "Client.h"
 
-class Client
+class Client : public CopyableQObject
 {
+    Q_OBJECT
 public:
     Client();
     ~Client();
@@ -27,11 +31,20 @@ public:
     int connection;
     int value;
 
+    void InitializeClient(std::string port, std::string hostname);
     void createHostName(std::string host);
     void createPortNum(std::string port);
     void createSockDesc();
     void createAddressRecord();
     void connectToHost();
+
+    void sendError(bool doExit, std::string title, std::string text);
+    void sendInfo(std::string title, std::string text);
+
+    Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
+    Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
+    Q_SIGNAL void sendErrorMessage(bool exit, std::string title, std::string text);
+    Q_SIGNAL void sendInfoMessage(std::string title, std::string text);
 
 private:
 
