@@ -52,5 +52,6 @@ void ClientController::RunClientLoop(std::string port, std::string hostname, std
 	else
 	{
 		//Code for client connect to server and send/receive loop goes here
+		//(Does not need its own thread)
 	}
 }
