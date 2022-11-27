@@ -60,7 +60,7 @@ void ServerController::RunServerLoop(string port)
 			else
 			{
 				//Will create new thread for each client that is accepted
-				std::thread(&Server::HandleClient, this->server, this->server.connection).detach();
+				std::thread(&Server::HandleClient, &this->server, this->server.connection).detach();
 			}
 		}
 	}
