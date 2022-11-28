@@ -156,8 +156,17 @@ void Server::HandleClient(int connection)
 		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
 
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
-		if (incomeMessage.cvalue == "DISCONNECT")
+		std::string strMessage(incomeMessage.cvalue);
+		if (strMessage == "DISCONNECT")
 		{
+			//Prepares message for sending back to client for final time before diconnection
+			std::string finalMessage = userName + " disconnected";
+			strcpy_s(sentMessage.cvalue, finalMessage.c_str());
+			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
+			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
+			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+
+			//Closes socket and breaks from this loop, also ending current thread
 			closesocket(currentConnection);
 			break;
 		}
@@ -171,12 +180,12 @@ void Server::HandleClient(int connection)
 			inMsgToPrint.append(incomeMessage.name); //Appends username of message sender
 			inMsgToPrint.append("\n"); //Appends another new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
-			inMsgToPrint.append("\n"); //Appends another new line
 			sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
 
 			//Prepares message for sending back to client and sends
-			strcpy_s(sentMessage.cvalue, "Server: Message received");
+			strcpy_s(sentMessage.cvalue, "Message received");
 			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
+			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
 			//Prints outgoing message out on GUI
@@ -187,7 +196,6 @@ void Server::HandleClient(int connection)
 			outMsgToPrint.append("Server"); //Appends username of message sender
 			outMsgToPrint.append("\n"); //Appends another new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
-			outMsgToPrint.append("\n"); //Appends another new line
 			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
 
 			//For testing with example client.cc file

@@ -69,12 +69,13 @@ void ClientController::RunClientLoop(std::string port, std::string hostname, std
 			recv(this->client.sockdesc, (char*)&incomeMessage, sizeof(message), 0);
 
 			//If message from server is a client list update, update client list on ui
-			//if (clientUpdate)
-			//{
-				//this->client.sendNewClientListUI(incomeMessage.cvalue);
-			//}
-			//else
-			///{
+			string type(incomeMessage.type);
+			if (type == "CLIENT")
+			{
+				this->client.sendNewClientListUI(incomeMessage.cvalue);
+			}
+			else if (type == "NORMAL")
+			{
 				//Prints incoming message from server out on GUI
 				string inMsgToPrint = ""; //Set to empty for new message
 				inMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
@@ -83,9 +84,16 @@ void ClientController::RunClientLoop(std::string port, std::string hostname, std
 				inMsgToPrint.append(incomeMessage.name); //Appends username of message sender
 				inMsgToPrint.append("\n"); //Appends another new line
 				inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
-				inMsgToPrint.append("\n"); //Appends another new line
 				this->client.sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
-			//}
+
+				//If string returned is a disconnect confirmation message, close socket and break loop
+				string exitStr(incomeMessage.cvalue);
+				if (exitStr == "Client Disconnected")
+				{
+					closesocket(this->client.sockdesc);
+					break;
+				}
+			}
 		}
 	}
 }
@@ -107,7 +115,5 @@ void ClientController::sendMessage(std::string messageText)
 	outMsgToPrint.append(regularMessage.name); //Appends username of message sender
 	outMsgToPrint.append("\n"); //Appends another new line
 	outMsgToPrint.append(regularMessage.cvalue); //Appends actual message
-	outMsgToPrint.append("\n"); //Appends another new line
 	this->client.sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
-
 }
