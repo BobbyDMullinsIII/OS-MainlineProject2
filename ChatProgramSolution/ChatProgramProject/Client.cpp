@@ -121,26 +121,26 @@ void Client::connectToHost()
 		std::string message = "Connection successful.\nClient connection: ";
 		message += std::to_string(this->connection);
 
-		//sendInfo("Client Host Connection Information", message); //Send message to main GUI to be displayed in a message box
+		sendInfo("Client Host Connection Information", message); //Send message to main GUI to be displayed in a message box
 	}
 }
 
 //Method for sending new client list to main ui
 void Client::sendNewClientListUI(std::string newList)
 {
-	emit sendNewClientListSignal(newList);
+	emit sendNewClientListSignal(newList); //Sends new list to main ui
 }
 
 //Method for sending outgoing(sent) message to main ui
 void Client::sendSentMessageUI(std::string smessage)
 {
-	emit appendSentMessageSignal(smessage); //Sends to main ui
+	emit appendSentMessageSignal(smessage); //Sends outgoing message to main ui
 }
 
 //Method for sending incoming message to main ui
 void Client::sendIncomeMessageUI(std::string imessage)
 {
-	emit appendIncomeMessageSignal(imessage); //Sends to main ui
+	emit appendIncomeMessageSignal(imessage); //Sends incoming message to main ui
 }
 
 //Method for sending error message to main ui to show message
@@ -152,5 +152,5 @@ void Client::sendError(bool doExit, std::string title, std::string text)
 //Method for sending error message to main ui to show message
 void Client::sendInfo(std::string title, std::string text)
 {
-	emit sendInfoMessage(title, text); //Emit error message to main window
+	emit sendInfoMessage(title, text); //Emit info message to main window
 }

@@ -23,11 +23,11 @@ ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
     CControl = ClientController();
 
     QObject::connect(&dialog, SIGNAL(startClientSignal(std::string, std::string, std::string)), this, SLOT(RunClientProgram(std::string, std::string, std::string)), Qt::DirectConnection);
-    QObject::connect(&CControl.client, SIGNAL(sendNewClientListSignal(std::string)), this, SLOT(replaceClientList(std::string)), Qt::DirectConnection);
+    QObject::connect(&CControl.client, SIGNAL(sendNewClientListSignal(std::string)), this, SLOT(replaceClientList(std::string)), Qt::AutoConnection);
     QObject::connect(&CControl.client, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::DirectConnection);
     QObject::connect(&CControl.client, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::DirectConnection);
-    QObject::connect(&CControl.client, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
-    QObject::connect(&CControl.client, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::DirectConnection);
+    QObject::connect(&CControl.client, SIGNAL(sendErrorMessage(std::string, std::string)), this, SLOT(displayErrorMessage(std::string, std::string)), Qt::BlockingQueuedConnection);
+    QObject::connect(&CControl.client, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::AutoConnection);
 }
 
 ChatProgramProject::~ChatProgramProject()
@@ -44,7 +44,8 @@ void ChatProgramProject::RunClientProgram(std::string port, std::string hostname
 void ChatProgramProject::replaceClientList(std::string newList)
 {
     //Replaces contents of clientTextBrowser
-    ui.clientTextBrowser->setPlainText(QString::fromStdString(newList));
+    ui.clientTextBrowser->clear();
+    ui.clientTextBrowser->append(QString::fromStdString(newList + "\n\n"));
 }
 
 void ChatProgramProject::appendSentMessage(std::string sentMessage)
@@ -76,7 +77,7 @@ void ChatProgramProject::displayErrorMessage(bool doExit, std::string title, std
 void ChatProgramProject::displayInfoMessage(std::string title, std::string text)
 {
     QMessageBox messageBox;
-    messageBox.critical(0, title.c_str(), text.c_str());
+    messageBox.information(0, title.c_str(), text.c_str());
     messageBox.setFixedSize(640, 480);
 }
 
