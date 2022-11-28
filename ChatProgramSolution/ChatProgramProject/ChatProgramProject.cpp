@@ -23,6 +23,7 @@ ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
     CControl = ClientController();
 
     QObject::connect(&dialog, SIGNAL(startClientSignal(std::string, std::string, std::string)), this, SLOT(RunClientProgram(std::string, std::string, std::string)), Qt::DirectConnection);
+    QObject::connect(&CControl.client, SIGNAL(sendNewClientListSignal(std::string)), this, SLOT(replaceClientList(std::string)), Qt::DirectConnection);
     QObject::connect(&CControl.client, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::DirectConnection);
     QObject::connect(&CControl.client, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::DirectConnection);
     QObject::connect(&CControl.client, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
@@ -40,18 +41,24 @@ void ChatProgramProject::RunClientProgram(std::string port, std::string hostname
     std::thread(&ClientController::RunClientLoop, &this->CControl, port, hostname, username).detach(); //THIS GIVES AN ERROR FOR SOME REASON
 }
 
+void ChatProgramProject::replaceClientList(std::string newList)
+{
+    //Replaces contents of clientTextBrowser
+    ui.clientTextBrowser->setPlainText(QString::fromStdString(newList));
+}
+
 void ChatProgramProject::appendSentMessage(std::string sentMessage)
 {
     //Appends message to sentString
-    this->sentString.append("\n\n" + sentMessage);
-    ui.sentTextBrowser->append(QString::fromStdString("\n\n" + sentMessage));
+    this->sentString.append(sentMessage + "\n\n");
+    ui.sentTextBrowser->append(QString::fromStdString(sentMessage + "\n\n"));
 }
 
 void ChatProgramProject::appendIncomeMessage(std::string incomeMessage)
 {
     //Appends message to incomeString
-    this->incomeString.append("\n\n" + incomeMessage);
-    ui.incomingTextBrowser->append(QString::fromStdString("\n\n" + incomeMessage));
+    this->incomeString.append(incomeMessage + "\n\n");
+    ui.incomingTextBrowser->append(QString::fromStdString(incomeMessage + "\n\n"));
 }
 
 void ChatProgramProject::displayErrorMessage(bool doExit, std::string title, std::string text)
@@ -71,6 +78,12 @@ void ChatProgramProject::displayInfoMessage(std::string title, std::string text)
     QMessageBox messageBox;
     messageBox.critical(0, title.c_str(), text.c_str());
     messageBox.setFixedSize(640, 480);
+}
+
+void ChatProgramProject::on_messageSendButton_clicked()
+{
+    std::string messageText = ui.messageSendTextEdit->toPlainText().toStdString(); //Get message to send from server and convert to normal string
+    this->CControl.sendMessage(messageText);
 }
 
 void ChatProgramProject::on_actionConnectToServer_triggered()

@@ -15,9 +15,9 @@
 #include "Client.h"
 
 struct message {
-	int    ivalue;
-	double dvalue;
-	char   cvalue[56];
+	char   cvalue[102]; //Actual message contents
+	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
+	char   name[16];   //Name of thing and/or person that sent message
 };
 
 //Parameterized Constructor
@@ -121,10 +121,14 @@ void Client::connectToHost()
 		std::string message = "Connection successful.\nClient connection: ";
 		message += std::to_string(this->connection);
 
-		QMessageBox messageBox;
-		messageBox.information(0, "Client Host Connection Information", message.c_str());
-		messageBox.setFixedSize(640, 480);
+		//sendInfo("Client Host Connection Information", message); //Send message to main GUI to be displayed in a message box
 	}
+}
+
+//Method for sending new client list to main ui
+void Client::sendNewClientListUI(std::string newList)
+{
+	emit sendNewClientListSignal(newList);
 }
 
 //Method for sending outgoing(sent) message to main ui

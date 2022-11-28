@@ -55,15 +55,15 @@ void ChatProgramServer::RunServerProgram(std::string port)
 void ChatProgramServer::appendIncomeMessage(std::string incomeMessage)
 {
     //Appends message to incomeString
-    this->incomeString.append("\n\n" + incomeMessage);
-    ui.incomingTextObject->append(QString::fromStdString("\n\n" + incomeMessage));
+    this->incomeString.append(incomeMessage + "\n\n");
+    ui.incomingTextObject->append(QString::fromStdString(incomeMessage + "\n\n"));
 }
 
 void ChatProgramServer::appendSentMessage(std::string sentMessage)
 {
     //Appends message to sentString
-    this->sentString.append("\n\n" + sentMessage);
-    ui.sentTextObject->append(QString::fromStdString("\n\n" + sentMessage));
+    this->sentString.append(sentMessage + "\n\n");
+    ui.sentTextObject->append(QString::fromStdString(sentMessage + "\n\n"));
 }
 
 void ChatProgramServer::displayErrorMessage(bool doExit, std::string title, std::string text) 

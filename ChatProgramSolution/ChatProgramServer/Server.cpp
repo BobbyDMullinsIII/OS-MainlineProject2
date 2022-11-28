@@ -14,9 +14,9 @@
 #include "Server.h"
 
 struct message {
-	int    ivalue;
-	double dvalue;
-	char   cvalue[56];
+	char   cvalue[102]; //Actual message contents
+	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
+	char   name[16];   //Name of thing and/or person that sent message
 };
 
 //Constructor
@@ -146,8 +146,8 @@ void Server::HandleClient(int connection)
 	userID = -1;
 
 	//The first message from client is their username
-	//messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
-	//userName = incomeMessage.cvalue;
+	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+	userName = incomeMessage.cvalue;
 
 	//Infinite loop to keep reading and writing messages
 	for (;;)
@@ -167,27 +167,28 @@ void Server::HandleClient(int connection)
 			inMsgToPrint = ""; //Set to empty for new message
 			inMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
 			inMsgToPrint = inMsgToPrint.substr(0, inMsgToPrint.find("."));
-			inMsgToPrint.append("\n" + userName + "\n"); //Appends username and new line
+			inMsgToPrint.append("\n"); //Appends another new line
+			inMsgToPrint.append(incomeMessage.name); //Appends username of message sender
+			inMsgToPrint.append("\n"); //Appends another new line
 			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
 			inMsgToPrint.append("\n"); //Appends another new line
 			sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
 
-			//Increments message variables and prepares message for sending back to client
-			sentMessage.ivalue = incomeMessage.ivalue + 1;
-			sentMessage.dvalue = incomeMessage.dvalue + 1.0;
+			//Prepares message for sending back to client and sends
 			strcpy_s(sentMessage.cvalue, "Server: Message received");
+			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
+			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
 			//Prints outgoing message out on GUI
 			outMsgToPrint = ""; //Set to empty for new message
 			outMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
 			outMsgToPrint = outMsgToPrint.substr(0, outMsgToPrint.find("."));
-			outMsgToPrint.append("\nServer\n"); //Appends username and new line
+			outMsgToPrint.append("\n"); //Appends another new line
+			outMsgToPrint.append("Server"); //Appends username of message sender
+			outMsgToPrint.append("\n"); //Appends another new line
 			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
 			outMsgToPrint.append("\n"); //Appends another new line
 			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
-
-			//Sends message back to client
-			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
 			//For testing with example client.cc file
 			//closesocket(currentConnection);
