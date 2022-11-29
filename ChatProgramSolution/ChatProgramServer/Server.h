@@ -36,6 +36,9 @@ public:
 	void bindSocket();
 	void listenSocket();
 	void HandleClient(int connection);
+	message GetMsg();
+	void PutMsg(message messa);
+
 
 	void sendIncomeMessageUI(std::string imessage);
 	void sendSentMessageUI(std::string smessage);

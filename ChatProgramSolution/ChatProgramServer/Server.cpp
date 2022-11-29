@@ -164,6 +164,9 @@ void Server::HandleClient(int connection)
 		//Reads a message from client
 		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
 
+		PutMsg(incomeMessage); //Put incoming message in queue
+
+
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
 		std::string strMessage(incomeMessage.cvalue);
 		if (strMessage == "DISCONNECT")
@@ -195,6 +198,9 @@ void Server::HandleClient(int connection)
 			strcpy_s(sentMessage.cvalue, "Message received");
 			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
 			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
+			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+
+			sentMessage = GetMsg();
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
 			//Prints outgoing message out on GUI
