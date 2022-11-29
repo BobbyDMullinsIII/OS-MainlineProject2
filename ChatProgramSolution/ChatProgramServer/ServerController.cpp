@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
+#include <queue>
 #include "Server.h"
 #include "ServerController.h"
 using namespace std;

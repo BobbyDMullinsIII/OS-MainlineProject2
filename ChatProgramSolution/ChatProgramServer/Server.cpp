@@ -11,6 +11,11 @@
 
 //Normal includes
 #include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
+#include <queue>
 #include "Server.h"
 
 struct message {
@@ -18,6 +23,11 @@ struct message {
 	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
 	char   name[16];   //Name of thing and/or person that sent message
 };
+
+std::queue<message> msgs;
+std::mutex m;
+std::condition_variable ConVar;
+std::vector<int> connectVector;
 
 //Constructor
 Server::Server()
@@ -133,6 +143,7 @@ void Server::listenSocket()
 void Server::HandleClient(int connection)
 {
 	int currentConnection = connection;
+	connectVector.push_back(currentConnection);
 	int messageVal;
 	int userID;			      //Current ID of user
 	std::string userName;     //Variable for keeping username
@@ -154,6 +165,7 @@ void Server::HandleClient(int connection)
 	{
 		//Reads a message from client
 		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+		sendToOtherClients(currentConnection, incomeMessage);
 
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
 		std::string strMessage(incomeMessage.cvalue);
@@ -203,6 +215,42 @@ void Server::HandleClient(int connection)
 			//break;
 		}
 	}
+}
+
+//Method for sending messages to other clients
+void Server::sendToOtherClients(int currentConnection, message sentMessage)
+{
+	for (int i = 0; i < connectVector.size(); i++)
+	{
+		if (connectVector[i] != currentConnection)
+		{
+			send(connectVector[i], (char*)&sentMessage, sizeof(message), 0);
+		}
+	}
+}
+
+Server::message Server::GetMsg()
+{
+	message messa;
+	std::unique_lock<std::mutex> lock(m);
+
+	//may need to check for multiple messages
+	ConVar.wait(lock, []() {return not msgs.empty(); });
+	//gets client message
+	//messa = msgs.front();
+	//removes message from queue
+	msgs.pop();
+
+	return messa;
+}
+
+void Server::PutMsg(message messa)
+{
+	std::lock_guard<std::mutex> lk(m);
+	//enqueue message
+	//msgs.push(messa);
+	//notifies conditional variable, and allows a waiting thread to run
+	ConVar.notify_one();
 }
 
 //Method for sending incoming message to main ui
