@@ -18,13 +18,7 @@
 #include <queue>
 #include "Server.h"
 
-struct message {
-	char   cvalue[102]; //Actual message contents
-	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
-	char   name[16];   //Name of thing and/or person that sent message
-};
-
-std::queue<message> msgs;
+std::queue<Server::message> msgs;
 std::mutex m;
 std::condition_variable ConVar;
 std::vector<int> connectVector;
@@ -147,9 +141,9 @@ void Server::HandleClient(int connection)
 	int messageVal;
 	int userID;			      //Current ID of user
 	std::string userName;     //Variable for keeping username
-	message incomeMessage;    //Variable for incoming messages from client
+	Server::message incomeMessage;    //Variable for incoming messages from client
 	std::string inMsgToPrint;
-	message sentMessage;      //Variable for sent messages to client
+	Server::message sentMessage;      //Variable for sent messages to client
 	std::string outMsgToPrint;
 
 	//Sets userName and userID to placeholder values for testing and error-checking
@@ -157,14 +151,14 @@ void Server::HandleClient(int connection)
 	userID = -1;
 
 	//The first message from client is their username
-	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(Server::message), 0);
 	userName = incomeMessage.cvalue;
 
 	//Infinite loop to keep reading and writing messages
 	for (;;)
 	{
 		//Reads a message from client
-		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
+		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(Server::message), 0);
 		sendToOtherClients(currentConnection, incomeMessage);
 
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
@@ -176,7 +170,7 @@ void Server::HandleClient(int connection)
 			strcpy_s(sentMessage.cvalue, finalMessage.c_str());
 			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
 			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
-			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+			send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
 
 			//Closes socket and breaks from this loop, also ending current thread
 			closesocket(currentConnection);
@@ -198,7 +192,7 @@ void Server::HandleClient(int connection)
 			strcpy_s(sentMessage.cvalue, "Message received");
 			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
 			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
-			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
+			send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
 
 			//Prints outgoing message out on GUI
 			outMsgToPrint = ""; //Set to empty for new message
@@ -218,20 +212,20 @@ void Server::HandleClient(int connection)
 }
 
 //Method for sending messages to other clients
-void Server::sendToOtherClients(int currentConnection, message sentMessage)
+void Server::sendToOtherClients(int currentConnection, Server::message sentMessage)
 {
 	for (int i = 0; i < connectVector.size(); i++)
 	{
 		if (connectVector[i] != currentConnection)
 		{
-			send(connectVector[i], (char*)&sentMessage, sizeof(message), 0);
+			send(connectVector[i], (char*)&sentMessage, sizeof(Server::message), 0);
 		}
 	}
 }
 
 Server::message Server::GetMsg()
 {
-	message messa;
+	Server::message messa;
 	std::unique_lock<std::mutex> lock(m);
 
 	//may need to check for multiple messages
@@ -244,7 +238,7 @@ Server::message Server::GetMsg()
 	return messa;
 }
 
-void Server::PutMsg(message messa)
+void Server::PutMsg(Server::message messa)
 {
 	std::lock_guard<std::mutex> lk(m);
 	//enqueue message
