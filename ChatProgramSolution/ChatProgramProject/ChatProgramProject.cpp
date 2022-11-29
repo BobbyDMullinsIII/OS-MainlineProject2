@@ -26,7 +26,7 @@ ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
     QObject::connect(&CControl.client, SIGNAL(sendNewClientListSignal(std::string)), this, SLOT(replaceClientList(std::string)), Qt::AutoConnection);
     QObject::connect(&CControl.client, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::DirectConnection);
     QObject::connect(&CControl.client, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::DirectConnection);
-    QObject::connect(&CControl.client, SIGNAL(sendErrorMessage(std::string, std::string)), this, SLOT(displayErrorMessage(std::string, std::string)), Qt::BlockingQueuedConnection);
+    QObject::connect(&CControl.client, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
     QObject::connect(&CControl.client, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::AutoConnection);
 }
 
