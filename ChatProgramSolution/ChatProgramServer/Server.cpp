@@ -11,6 +11,11 @@
 
 //Normal includes
 #include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
+#include <queue>
 #include "Server.h"
 
 struct message {
@@ -18,6 +23,10 @@ struct message {
 	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
 	char   name[16];   //Name of thing and/or person that sent message
 };
+
+queue<message> msgs;
+mutex m;
+condition_variable ConVar;
 
 //Constructor
 Server::Server()
@@ -203,6 +212,30 @@ void Server::HandleClient(int connection)
 			//break;
 		}
 	}
+}
+
+message GetMsg()
+{
+	message messa;
+	unique_lock<mutex> lock(m);
+
+	//may need to check for multiple messages
+	ConVar.wait(lock, []() {return not msgs.empty(); });
+	//gets client message
+	 messa = msgs.front();
+	//removes message from queue
+	msgs.pop();
+
+	return messa;
+}
+
+void PutMsg(message messa)
+{
+	lock_guard<mutex> lk(m);
+	//enqueue message
+	msgs.push(messa);
+	//notifies conditional variable, and allows a waiting thread to run
+	ConVar.notify_one();
 }
 
 //Method for sending incoming message to main ui
