@@ -15,7 +15,7 @@ public:
     Client client;
 
     void RunClientLoop(std::string port, std::string hostname, std::string username);
-
+    void sendMessage(std::string messageText);
 
 private:
 };

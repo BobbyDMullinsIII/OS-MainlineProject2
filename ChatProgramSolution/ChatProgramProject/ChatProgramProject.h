@@ -25,15 +25,16 @@ public:
 
 public slots:
     void RunClientProgram(std::string port, std::string hostname, std::string username);
+    void replaceClientList(std::string newList);
     void appendSentMessage(std::string sentMessage);
     void appendIncomeMessage(std::string incomeMessage);
     void displayErrorMessage(bool doExit, std::string title, std::string text);
     void displayInfoMessage(std::string title, std::string text);
 
 private slots:
+    void on_messageSendButton_clicked();
     void on_actionConnectToServer_triggered();
-    void on_exitActionButton_triggered(); //Buttons in the menubar menus use the "triggered" event
-                                          //Regular buttons on the form might use the "clicked" event instead
+    void on_exitActionButton_triggered();
 
 private:
     Ui::ChatProgramProjectClass ui;

@@ -30,6 +30,7 @@ public:
     char portnum[81];
     int connection;
     int value;
+    std::string username;
 
     void InitializeClient(std::string port, std::string hostname);
     void createHostName(std::string host);
@@ -38,11 +39,13 @@ public:
     void createAddressRecord();
     void connectToHost();
 
+    void sendNewClientListUI(std::string newList);
     void sendSentMessageUI(std::string smessage);
     void sendIncomeMessageUI(std::string imessage);
     void sendError(bool doExit, std::string title, std::string text);
     void sendInfo(std::string title, std::string text);
 
+    Q_SIGNAL void sendNewClientListSignal(std::string newList);
     Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
     Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
     Q_SIGNAL void sendErrorMessage(bool exit, std::string title, std::string text);

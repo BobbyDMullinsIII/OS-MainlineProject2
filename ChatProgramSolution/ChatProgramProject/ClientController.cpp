@@ -11,9 +11,9 @@
 using namespace std;
 
 struct message {
-	int    ivalue;
-	double dvalue;
-	char   cvalue[56];
+	char   cvalue[102]; //Actual message contents
+	char   type[10];    //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
+	char   name[16];   //Name of thing and/or person that sent message
 };
 
 //Constructor
@@ -51,7 +51,69 @@ void ClientController::RunClientLoop(std::string port, std::string hostname, std
     }
 	else
 	{
-		//Code for client connect to server and send/receive loop goes here
-		//(Does not need its own thread)
+		this->client.username = username; //Set client username
+		this->client.InitializeClient(port, hostname); //Initialize client and connect to server
+		
+		//Create message and send username to server
+		message nameMessage;
+		strcpy_s(nameMessage.cvalue, username.c_str());
+		strcpy_s(nameMessage.type, "NORMAL");
+		strcpy_s(nameMessage.name, username.c_str());
+		send(this->client.sockdesc, (char*)&nameMessage, sizeof(message), 0);
+
+		message incomeMessage; //Variable for all future messages from server
+
+		//Continuously listen for messages from the server
+		for (;;)
+		{
+			recv(this->client.sockdesc, (char*)&incomeMessage, sizeof(message), 0);
+
+			//If message from server is a client list update, update client list on ui
+			string type(incomeMessage.type);
+			if (type == "CLIENT")
+			{
+				this->client.sendNewClientListUI(incomeMessage.cvalue);
+			}
+			else if (type == "NORMAL")
+			{
+				//Prints incoming message from server out on GUI
+				string inMsgToPrint = ""; //Set to empty for new message
+				inMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
+				inMsgToPrint = inMsgToPrint.substr(0, inMsgToPrint.find("."));
+				inMsgToPrint.append("\n"); //Appends another new line
+				inMsgToPrint.append(incomeMessage.name); //Appends username of message sender
+				inMsgToPrint.append("\n"); //Appends another new line
+				inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
+				this->client.sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
+
+				//If string returned is a disconnect confirmation message, close socket and break loop
+				string exitStr(incomeMessage.cvalue);
+				if (exitStr == "Client Disconnected")
+				{
+					closesocket(this->client.sockdesc);
+					break;
+				}
+			}
+		}
 	}
+}
+
+void ClientController::sendMessage(std::string messageText)
+{
+	//Create message variable and send message to server
+	message regularMessage;
+	strcpy_s(regularMessage.cvalue, messageText.c_str());
+	strcpy_s(regularMessage.type, "NORMAL");
+	strcpy_s(regularMessage.name, this->client.username.c_str());
+	send(this->client.sockdesc, (char*)&regularMessage, sizeof(message), 0);
+
+	//Prints outgoing message sent from client to the ui
+	string outMsgToPrint = ""; //Set to empty for new message
+	outMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
+	outMsgToPrint = outMsgToPrint.substr(0, outMsgToPrint.find("."));
+	outMsgToPrint.append("\n"); //Appends another new line
+	outMsgToPrint.append(regularMessage.name); //Appends username of message sender
+	outMsgToPrint.append("\n"); //Appends another new line
+	outMsgToPrint.append(regularMessage.cvalue); //Appends actual message
+	this->client.sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
 }
