@@ -24,9 +24,9 @@ struct message {
 	char   name[16];   //Name of thing and/or person that sent message
 };
 
-queue<message> msgs;
-mutex m;
-condition_variable ConVar;
+std::queue<message> msgs;
+std::mutex m;
+std::condition_variable ConVar;
 
 //Constructor
 Server::Server()
@@ -217,7 +217,7 @@ void Server::HandleClient(int connection)
 message GetMsg()
 {
 	message messa;
-	unique_lock<mutex> lock(m);
+	std::unique_lock<std::mutex> lock(m);
 
 	//may need to check for multiple messages
 	ConVar.wait(lock, []() {return not msgs.empty(); });
@@ -231,7 +231,7 @@ message GetMsg()
 
 void PutMsg(message messa)
 {
-	lock_guard<mutex> lk(m);
+	std::lock_guard<std::mutex> lk(m);
 	//enqueue message
 	msgs.push(messa);
 	//notifies conditional variable, and allows a waiting thread to run
