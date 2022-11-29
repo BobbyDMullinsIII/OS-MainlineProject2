@@ -88,7 +88,8 @@ void ClientController::RunClientLoop(std::string port, std::string hostname, std
 
 				//If string returned is a disconnect confirmation message, close socket and break loop
 				string exitStr(incomeMessage.cvalue);
-				if (exitStr == "Client Disconnected")
+				string checkStr = this->client.username + " disconnected";
+				if (exitStr == checkStr)
 				{
 					closesocket(this->client.sockdesc);
 					break;
