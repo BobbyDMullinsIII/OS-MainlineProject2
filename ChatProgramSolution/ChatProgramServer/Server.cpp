@@ -27,6 +27,7 @@ struct message {
 std::queue<message> msgs;
 std::mutex m;
 std::condition_variable ConVar;
+std::vector<int> connectVector;
 
 //Constructor
 Server::Server()
@@ -142,6 +143,7 @@ void Server::listenSocket()
 void Server::HandleClient(int connection)
 {
 	int currentConnection = connection;
+	connectVector.push_back(currentConnection);
 	int messageVal;
 	int userID;			      //Current ID of user
 	std::string userName;     //Variable for keeping username
@@ -163,9 +165,7 @@ void Server::HandleClient(int connection)
 	{
 		//Reads a message from client
 		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(message), 0);
-
-		PutMsg(incomeMessage); //Put incoming message in queue
-
+		sendToOtherClients(currentConnection, incomeMessage);
 
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
 		std::string strMessage(incomeMessage.cvalue);
@@ -200,9 +200,6 @@ void Server::HandleClient(int connection)
 			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
 			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
 
-			sentMessage = GetMsg();
-			send(currentConnection, (char*)&sentMessage, sizeof(message), 0);
-
 			//Prints outgoing message out on GUI
 			outMsgToPrint = ""; //Set to empty for new message
 			outMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
@@ -220,7 +217,19 @@ void Server::HandleClient(int connection)
 	}
 }
 
-message GetMsg()
+//Method for sending messages to other clients
+void Server::sendToOtherClients(int currentConnection, message sentMessage)
+{
+	for (int i = 0; i < connectVector.size(); i++)
+	{
+		if (connectVector[i] != currentConnection)
+		{
+			send(connectVector[i], (char*)&sentMessage, sizeof(message), 0);
+		}
+	}
+}
+
+Server::message Server::GetMsg()
 {
 	message messa;
 	std::unique_lock<std::mutex> lock(m);
@@ -228,18 +237,18 @@ message GetMsg()
 	//may need to check for multiple messages
 	ConVar.wait(lock, []() {return not msgs.empty(); });
 	//gets client message
-	 messa = msgs.front();
+	//messa = msgs.front();
 	//removes message from queue
 	msgs.pop();
 
 	return messa;
 }
 
-void PutMsg(message messa)
+void Server::PutMsg(message messa)
 {
 	std::lock_guard<std::mutex> lk(m);
 	//enqueue message
-	msgs.push(messa);
+	//msgs.push(messa);
 	//notifies conditional variable, and allows a waiting thread to run
 	ConVar.notify_one();
 }

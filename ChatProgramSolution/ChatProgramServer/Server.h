@@ -42,6 +42,7 @@ public:
 	void bindSocket();
 	void listenSocket();
 	void HandleClient(int connection);
+	void sendToOtherClients(int currentConnections, message sentMessage);
 	message GetMsg();
 	void PutMsg(message messa);
 
