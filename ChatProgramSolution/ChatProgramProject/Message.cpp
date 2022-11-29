@@ -27,9 +27,11 @@ string GetMsg()
 	string message;
 	unique_lock<mutex> lock(m);
 
+	//may need to check for multiple messages
 	ConVar.wait(lock, []() {return not msgs.empty();});
 	//gets client message
 	message = msgs.front();
+	//removes message from queue
 	msgs.pop();
 
 	return message;
@@ -37,8 +39,10 @@ string GetMsg()
 
 void PutMsg(string message)
 {
-	std::lock_guard<std::mutex> lk(m);
+	lock_guard<mutex> lk(m);
+	//enqueue message
 	msgs.push(message);
+	//notifies conditional variable, and allows a waiting thread to run
 	ConVar.notify_one();
 }
 
