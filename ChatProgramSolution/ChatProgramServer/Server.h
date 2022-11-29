@@ -24,6 +24,12 @@ public:
 	Server();
 	~Server();
 
+	struct message {
+		char   cvalue[102]; //Actual message contents
+		char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
+		char   name[16];   //Name of thing and/or person that sent message
+	};
+
 	struct addrinfo* myinfo;
 	int sockdesc;
 	char portnum[81];
