@@ -24,10 +24,18 @@ public:
 	Server();
 	~Server();
 
+	//Struct for storing message values
+	//998 + 10 + 16 = 1024
 	struct message {
-		char   cvalue[102]; //Actual message contents
-		char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
+		char   cvalue[998]; //Actual message contents
+		char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server, 'DISCON' = user disconnect)
 		char   name[16];   //Name of thing and/or person that sent message
+	};
+
+	//Struct for storing user and their corresponding connection in one spot
+	struct userConnect {
+		int connection;
+		std::string userName;
 	};
 
 	struct addrinfo* myinfo;
@@ -42,16 +50,21 @@ public:
 	void bindSocket();
 	void listenSocket();
 	void HandleClient(int connection);
-	void sendToOtherClients(int currentConnections, message sentMessage);
+	message createNewMessage(std::string content, std::string type, std::string name);
+	std::string createUIMessage(std::string content, std::string name);
+	void updateClientList();
+	void removeConnectionFromVector(int currentConnection);
+	void sendToOtherClients(int currentConnections, message messageToSend);
 	message GetMsg();
 	void PutMsg(message messa);
 
-
+	void sendNewClientListUI(std::string newList);
 	void sendIncomeMessageUI(std::string imessage);
 	void sendSentMessageUI(std::string smessage);
 	void sendError(bool doExit, std::string title, std::string text);
 	void sendInfo(std::string title, std::string text);
 
+	Q_SIGNAL void sendNewClientListSignal(std::string newList);
 	Q_SIGNAL void appendIncomeMessageSignal(std::string incomeMessage);
 	Q_SIGNAL void appendSentMessageSignal(std::string sentMessage);
 	Q_SIGNAL void sendErrorMessage(bool exit, std::string title, std::string text);

@@ -1,4 +1,4 @@
-//Date library taken from GitHub
+//Date library taken from GitHub https://github.com/HowardHinnant/date/blob/master/include/date/date.h
 #include "date.h"
 
 //Includes taken from example client.cc file (And Windows equivalents)
@@ -14,16 +14,16 @@
 #include "User.h"
 #include "Client.h"
 
-struct message {
-	char   cvalue[102]; //Actual message contents
-	char   type[10]; //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server)
-	char   name[16];   //Name of thing and/or person that sent message
-};
-
 //Parameterized Constructor
 Client::Client()
 {
-    
+	this->hostname[81] = NULL;
+	this->myinfo = NULL;
+	this->sockdesc = NULL;
+	this->portnum[81] = NULL;
+	this->connection = NULL;
+	this->value = NULL;
+	this->username = "";
 }
 
 //Deconstructor

@@ -1,4 +1,4 @@
-//Date library taken from GitHub
+//Date library taken from GitHub https://github.com/HowardHinnant/date/blob/master/include/date/date.h
 #include "date.h"
 
 //Includes taken from example server.cc file (And Windows equivalents)
@@ -21,7 +21,7 @@
 std::queue<Server::message> msgs;
 std::mutex m;
 std::condition_variable ConVar;
-std::vector<int> connectVector;
+std::vector<Server::userConnect> connectVector;
 
 //Constructor
 Server::Server()
@@ -137,91 +137,148 @@ void Server::listenSocket()
 void Server::HandleClient(int connection)
 {
 	int currentConnection = connection;
-	connectVector.push_back(currentConnection);
 	int messageVal;
-	int userID;			      //Current ID of user
-	std::string userName;     //Variable for keeping username
+	std::string userName = "Placeholder Username";     //Variable for keeping username
 	Server::message incomeMessage;    //Variable for incoming messages from client
 	std::string inMsgToPrint;
 	Server::message sentMessage;      //Variable for sent messages to client
 	std::string outMsgToPrint;
 
-	//Sets userName and userID to placeholder values for testing and error-checking
-	userName = "Placeholder Username";
-	userID = -1;
-
 	//The first message from client is their username
 	messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(Server::message), 0);
 	userName = incomeMessage.cvalue;
+
+	//Adds username and corresponding connection value to the vector
+	Server::userConnect vectorValue;
+	vectorValue.connection = currentConnection;
+	vectorValue.userName = userName;
+	connectVector.push_back(vectorValue);
+
+	//Notifies all other clients that a new client has connected
+	std::string messageContent = userName + " has connected";
+	sentMessage = createNewMessage(messageContent, "NORMA:", "Server");
+	send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
+	sendToOtherClients(currentConnection, sentMessage);
+	updateClientList(); //Sends updated client list to all clients and server ui
 
 	//Infinite loop to keep reading and writing messages
 	for (;;)
 	{
 		//Reads a message from client
 		messageVal = recv(currentConnection, (char*)&incomeMessage, sizeof(Server::message), 0);
-		sendToOtherClients(currentConnection, incomeMessage);
 
 		//If user types only "DISCONNECT" (all caps) as their message, they disconnect
 		std::string strMessage(incomeMessage.cvalue);
 		if (strMessage == "DISCONNECT")
 		{
-			//Prepares message for sending back to client for final time before diconnection
+			//Prepares message for sending back to client for final time before disconnection
 			std::string finalMessage = userName + " disconnected";
-			strcpy_s(sentMessage.cvalue, finalMessage.c_str());
-			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
-			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
+			sentMessage = createNewMessage(finalMessage, "DISCON", "Server");
 			send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
 
-			//Closes socket and breaks from this loop, also ending current thread
-			closesocket(currentConnection);
+			Server::message disconMessage = createNewMessage(finalMessage, "NORMAL", "Server"); //Create disconnect message for other users
+			sendToOtherClients(currentConnection, disconMessage); //Sends disconnect message from server to the other clients to show that user disconnected
+			removeConnectionFromVector(currentConnection); //Removes current user from connection/name vector
+			updateClientList(); //Sends updated client list to all clients and server ui
+			closesocket(currentConnection); //Close socket connection with disconnecting client
+			break; //Break loop, ending this thread
+			break;
 			break;
 		}
 		else
 		{
+			//Sends normal message from one client to the other clients
+			sendToOtherClients(currentConnection, incomeMessage);
+
 			//Prints incoming message out on GUI
-			inMsgToPrint = ""; //Set to empty for new message
-			inMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
-			inMsgToPrint = inMsgToPrint.substr(0, inMsgToPrint.find("."));
-			inMsgToPrint.append("\n"); //Appends another new line
-			inMsgToPrint.append(incomeMessage.name); //Appends username of message sender
-			inMsgToPrint.append("\n"); //Appends another new line
-			inMsgToPrint.append(incomeMessage.cvalue); //Appends actual message
+			inMsgToPrint = createUIMessage(incomeMessage.cvalue, incomeMessage.name);
 			sendIncomeMessageUI(inMsgToPrint); //Sends inMsgToPrint to main ui
 
 			//Prepares message for sending back to client and sends
-			strcpy_s(sentMessage.cvalue, "Message received");
-			strcpy_s(sentMessage.type, "NORMAL"); //Messages will be 'NORMAL' unless client list changes
-			strcpy_s(sentMessage.name, "Server"); //Server sends message back to client
+			sentMessage = createNewMessage("Message received", "NORMAL", "Server");
 			send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
 
 			//Prints outgoing message out on GUI
-			outMsgToPrint = ""; //Set to empty for new message
-			outMsgToPrint.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
-			outMsgToPrint = outMsgToPrint.substr(0, outMsgToPrint.find("."));
-			outMsgToPrint.append("\n"); //Appends another new line
-			outMsgToPrint.append("Server"); //Appends username of message sender
-			outMsgToPrint.append("\n"); //Appends another new line
-			outMsgToPrint.append(sentMessage.cvalue); //Appends actual message
+			outMsgToPrint = createUIMessage(sentMessage.cvalue, "Server");
 			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
-
-			//For testing with example client.cc file
-			//closesocket(currentConnection);
-			//break;
 		}
 	}
 }
 
-//Method for sending messages to other clients
-void Server::sendToOtherClients(int currentConnection, Server::message sentMessage)
+//Method for creating a new message from 3 strings and returning it 
+Server::message Server::createNewMessage(std::string content, std::string type, std::string name)
+{
+	Server::message newMessage;
+
+	strcpy_s(newMessage.cvalue, content.c_str());
+	strcpy_s(newMessage.type, type.c_str());
+	strcpy_s(newMessage.name, name.c_str());
+
+	return newMessage;
+}
+
+//Method for creating a message to put on the ui (in std::string form) and returning it
+std::string Server::createUIMessage(std::string content, std::string name)
+{
+	//Prints outgoing message out on GUI
+	std::string newUIMessage = ""; //Set to empty for new message
+
+	newUIMessage.append("UTC " + date::format("%F %T", std::chrono::system_clock::now())); //Appends date and exact time
+	newUIMessage = newUIMessage.substr(0, newUIMessage.find("."));
+	newUIMessage.append("\n"); //Appends another new line
+	newUIMessage.append(name); //Appends username of message sender
+	newUIMessage.append("\n"); //Appends another new line
+	newUIMessage.append(content); //Appends actual message
+
+	return newUIMessage;
+}
+
+//Method for sending normal messages from one client to other clients
+void Server::sendToOtherClients(int currentConnection, Server::message messageToSend)
 {
 	for (int i = 0; i < connectVector.size(); i++)
 	{
-		if (connectVector[i] != currentConnection)
+		if (connectVector[i].connection != currentConnection)
 		{
-			send(connectVector[i], (char*)&sentMessage, sizeof(Server::message), 0);
+			send(connectVector[i].connection, (char*)&messageToSend, sizeof(Server::message), 0);
 		}
 	}
 }
+
+//Method for removing a connection from the vector, along with its corresponding username
+void Server::removeConnectionFromVector(int currentConnection)
+{
+	for (int i = 0; i < connectVector.size(); i++)
+	{
+		if (connectVector[i].connection == currentConnection)
+		{
+			connectVector.erase(connectVector.begin() + i);
+		}
+	}
+}
+
+//Method for sending updated client list to clients and server ui
+void Server::updateClientList()
+{
+	std::string clientList = "";
+	for (int i = 0; i < connectVector.size(); i++)
+	{
+		clientList.append(connectVector[i].userName);
+		clientList.append("\n\n");
+	}
+
+	sendNewClientListUI(clientList); //Send updated client list to server ui
+
+	//Send updated client list to all clients
+	Server::message newListMessage = createNewMessage(clientList, "CLIENT", "Server");
+
+	for (int i = 0; i < connectVector.size(); i++)
+	{
+		send(connectVector[i].connection, (char*)&newListMessage, sizeof(Server::message), 0);
+
+	}
+}
+
 
 Server::message Server::GetMsg()
 {
@@ -245,6 +302,12 @@ void Server::PutMsg(Server::message messa)
 	//msgs.push(messa);
 	//notifies conditional variable, and allows a waiting thread to run
 	ConVar.notify_one();
+}
+
+//Method for sending new client list to main ui
+void Server::sendNewClientListUI(std::string newList)
+{
+	emit sendNewClientListSignal(newList); //Sends new list to main ui
 }
 
 //Method for sending incoming message to main ui

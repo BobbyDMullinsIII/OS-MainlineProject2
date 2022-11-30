@@ -31,6 +31,7 @@ public slots:
     void RunServerProgram(std::string port);
     void appendIncomeMessage(std::string incomeMessage);
     void appendSentMessage(std::string sentMessage);
+    void replaceClientList(std::string clientList);
     void displayErrorMessage(bool doExit, std::string title, std::string text);
     void displayInfoMessage(std::string title, std::string text);
 

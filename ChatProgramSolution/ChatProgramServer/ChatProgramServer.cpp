@@ -23,10 +23,11 @@ ChatProgramServer::ChatProgramServer(QWidget *parent) : QMainWindow(parent)
     SControl = ServerController();
 
     QObject::connect(&dialog, SIGNAL(startServerSignal(std::string)), this, SLOT(RunServerProgram(std::string)), Qt::DirectConnection);
+    QObject::connect(&SControl.server, SIGNAL(sendNewClientListSignal(std::string)), this, SLOT(replaceClientList(std::string)), Qt::AutoConnection);
     QObject::connect(&SControl.server, SIGNAL(appendIncomeMessageSignal(std::string)), this, SLOT(appendIncomeMessage(std::string)), Qt::BlockingQueuedConnection);
     QObject::connect(&SControl.server, SIGNAL(appendSentMessageSignal(std::string)), this, SLOT(appendSentMessage(std::string)), Qt::BlockingQueuedConnection);
     QObject::connect(&SControl.server, SIGNAL(sendErrorMessage(bool, std::string, std::string)), this, SLOT(displayErrorMessage(bool, std::string, std::string)), Qt::BlockingQueuedConnection);
-    QObject::connect(&SControl.server, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::BlockingQueuedConnection);
+    QObject::connect(&SControl.server, SIGNAL(sendInfoMessage(std::string, std::string)), this, SLOT(displayInfoMessage(std::string, std::string)), Qt::AutoConnection);
 }
 
 ChatProgramServer::~ChatProgramServer()
@@ -50,6 +51,13 @@ void ChatProgramServer::RunServerProgram(std::string port)
     //Creates master thread for loop so program doesnt freeze during infinite loop
     //2 threads so far - 1 for program main execution(GUI), 1 for server loop
     std::thread(&ServerController::RunServerLoop, &this->SControl, port).detach();
+}
+
+void ChatProgramServer::replaceClientList(std::string newList)
+{
+    //Replaces contents of clientTextBrowser
+    ui.clientTextObject->clear();
+    ui.clientTextObject->append(QString::fromStdString(newList + "\n\n"));
 }
 
 void ChatProgramServer::appendIncomeMessage(std::string incomeMessage)
