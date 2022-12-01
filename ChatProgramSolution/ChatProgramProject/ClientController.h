@@ -13,11 +13,11 @@ public:
     ~ClientController();
 
     //Struct for storing message values
-    //998 + 10 + 16 = 1024
+    //1782 + 10 + 256 = 2048
     struct message {
-        char   cvalue[998]; //Actual message contents
+        char   cvalue[1782]; //Actual message contents
         char   type[10];    //Type of message ('CLIENT' = client will have updated list, 'NORMAL' = normal message to send between clients and server, 'DISCON' = user disconnect)
-        char   name[16];   //Name of thing and/or person that sent message
+        char   name[256];   //Name of thing and/or person that sent message
     };
 
     Client client;

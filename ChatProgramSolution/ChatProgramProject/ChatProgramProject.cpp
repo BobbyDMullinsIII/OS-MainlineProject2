@@ -14,6 +14,7 @@ ChatProgramProject::ChatProgramProject(QWidget* parent) : QMainWindow(parent)
     ui.sentTextBrowser->setObjectName("sentTextBrowser");
     ui.incomingTextBrowser->setObjectName("incomingTextBrowser");
     ui.clientTextBrowser->setObjectName("clientTextBrowser");
+    ui.nameLabel->setObjectName("nameLabel");
 
     //Set all strings to empty for now
     this->incomeString = "";       //Big string for appending all incoming messages to for display on ui (incomingTextObject)
@@ -36,6 +37,9 @@ ChatProgramProject::~ChatProgramProject()
 //Method for running overall client connection program using a thread to separate GUI from message loop
 void ChatProgramProject::RunClientProgram(std::string port, std::string hostname, std::string username)
 {
+    //Sets username on GUI to input username
+    ui.nameLabel->setText(QString::fromStdString(username));
+
     //Creates master thread for loop so program doesnt freeze during infinite loop
     //2 threads total - 1 for program main execution(GUI), 1 for client message send/receive loop
     std::thread(&ClientController::RunClientLoop, &this->CControl, port, hostname, username).detach(); //THIS GIVES AN ERROR FOR SOME REASON

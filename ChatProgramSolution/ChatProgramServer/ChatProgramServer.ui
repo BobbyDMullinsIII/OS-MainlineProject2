@@ -86,6 +86,7 @@ font: 14pt &quot;Segoe UI&quot;;</string>
     <property name="font">
      <font>
       <pointsize>20</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
@@ -97,9 +98,17 @@ font: 14pt &quot;Segoe UI&quot;;</string>
      <rect>
       <x>599</x>
       <y>40</y>
-      <width>201</width>
-      <height>341</height>
+      <width>200</width>
+      <height>340</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>14</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
@@ -110,7 +119,7 @@ font: 14pt &quot;Segoe UI&quot;;</string>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(63, 63, 63);
 color:white;
-font: 14pt &quot;Segoe UI&quot;;</string>
+font: 700 14pt &quot;Segoe UI&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="serverTitleLabel_2">
@@ -125,6 +134,8 @@ font: 14pt &quot;Segoe UI&quot;;</string>
     <property name="font">
      <font>
       <pointsize>20</pointsize>
+      <bold>true</bold>
+      <underline>false</underline>
      </font>
     </property>
     <property name="text">
@@ -143,6 +154,7 @@ font: 14pt &quot;Segoe UI&quot;;</string>
     <property name="font">
      <font>
       <pointsize>20</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">

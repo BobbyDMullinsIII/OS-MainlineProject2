@@ -156,9 +156,14 @@ void Server::HandleClient(int connection)
 
 	//Notifies all other clients that a new client has connected
 	std::string messageContent = userName + " has connected";
-	sentMessage = createNewMessage(messageContent, "NORMA:", "Server");
+	sentMessage = createNewMessage(messageContent, "NORMAL", "Server");
 	send(currentConnection, (char*)&sentMessage, sizeof(Server::message), 0);
 	sendToOtherClients(currentConnection, sentMessage);
+
+	//Prints outgoing message out on GUI
+	outMsgToPrint = createUIMessage(sentMessage.cvalue, "Server");
+	sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
+
 	updateClientList(); //Sends updated client list to all clients and server ui
 
 	//Infinite loop to keep reading and writing messages
@@ -178,6 +183,11 @@ void Server::HandleClient(int connection)
 
 			Server::message disconMessage = createNewMessage(finalMessage, "NORMAL", "Server"); //Create disconnect message for other users
 			sendToOtherClients(currentConnection, disconMessage); //Sends disconnect message from server to the other clients to show that user disconnected
+
+			//Prints outgoing message out on GUI
+			outMsgToPrint = createUIMessage(disconMessage.cvalue, "Server");
+			sendSentMessageUI(outMsgToPrint); //Sends outMsgToPrint to main ui
+
 			removeConnectionFromVector(currentConnection); //Removes current user from connection/name vector
 			updateClientList(); //Sends updated client list to all clients and server ui
 			closesocket(currentConnection); //Close socket connection with disconnecting client
